@@ -1,4 +1,5 @@
 git+https://github.com/beescoop/obeesdoo@12.0#subdirectory=setup/beesdoo_product
 git+https://github.com/beescoop/obeesdoo@12.0#subdirectory=setup/product_main_supplier
+git+https://github.com/coopiteasy/addons@12.0#subdirectory=setup/account_missing_tax
 git+https://github.com/beescoop/obeesdoo@12.0#subdirectory=setup/sale_adapt_price_wizard
 git+https://github.com/beescoop/obeesdoo@12.0#subdirectory=setup/sale_suggested_price
