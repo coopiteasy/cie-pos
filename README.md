@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/coopiteasy/cie-pos.svg?branch=12.0)](https://travis-ci.org/coopiteasy/cie-pos)
+[![Build Status](https://travis-ci.com/coopiteasy/cie-pos.svg?branch=12.0)](https://travis-ci.com/coopiteasy/cie-pos)
 ![Licence](https://img.shields.io/badge/licence-AGPL--3-blue.svg)
 
 # IT management tools for the social economy
