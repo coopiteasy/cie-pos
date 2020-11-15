@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+        string="Print Receipt"
+        id="action_report_receipt"
+        model="pos.order"
+        report_type="qweb-pdf"
+        name="pos_print_receipt_backend.report_pos_receipt"
+        file="pos_print_receipt_backend.report_pos_receipt"
+        paperformat="pos_print_receipt_backend.paperformat_pos_receipt"
+    />
+</odoo>
