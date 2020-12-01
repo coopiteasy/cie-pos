@@ -7,6 +7,7 @@
         report_type="qweb-pdf"
         name="pos_print_receipt_backend.report_pos_receipt"
         file="pos_print_receipt_backend.report_pos_receipt"
+        print_report_name="'Receipt_%s' % (object.pos_reference)"
         paperformat="pos_print_receipt_backend.paperformat_pos_receipt"
     />
 </odoo>
