@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <!-- Mail template are declared in a NOUPDATE block
+         so users can freely customize/delete them -->
+    <data noupdate="1">
+        <!--Email template -->
+        <record id="email_template_pos_order_receipt" model="mail.template">
+            <field name="name">POS Order Receipt: Send by email</field>
+            <field name="model_id" ref="point_of_sale.model_pos_order"/>
+            <field name="email_from">${object.user_id.email_formatted |safe}</field>
+            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="subject">${object.company_id.name} POS Order (Receipt Ref ${object.pos_reference or 'n/a'})</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        Dear ${object.partner_id.name}
+        % if object.partner_id.parent_id:
+            (${object.partner_id.parent_id.name})
+        % endif
+        <br /><br />
+        Here is your
+        % if object.pos_reference:
+            receipt <strong>${object.pos_reference}</strong>
+        % else:
+            receipt
+        %endif
+        % if object.name:
+            (with order reference: ${object.name})
+        % endif
+        amounting in <strong>${format_amount(object.amount_total, object.company_id.currency_id)}</strong>
+        from ${object.company_id.name}.
+        % if object.state=='paid':
+            This receipt is already paid.
+        % else:
+            Please remit payment at your earliest convenience.
+        % endif
+        <br /><br />
+        Do not hesitate to contact us if you have any question.
+    </p>
+</div>
+            </field>
+            <field name="report_template" ref="action_report_receipt"/>
+            <field name="report_name">Receipt_${(object.pos_reference or '').replace('-','_')}${object.state == 'draft' and '_draft' or ''}</field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>
