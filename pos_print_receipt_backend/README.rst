@@ -19,7 +19,7 @@ Generate POS receipts from Odoo Backend
 
 |badge1| |badge2| |badge3| 
 
-This modules allows you to print POS receipt from the Odoo Backend.
+This modules allows you to print and/or email POS receipt from the Odoo Backend.
 
 **Table of contents**
 
