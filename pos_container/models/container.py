@@ -17,6 +17,16 @@ class Container(models.Model):
         inverse_name="container_ids",
         string="Owner",
     )
+    currency_id = fields.Many2one(
+        "res.currency",
+        string="Currency",
+        required=True,
+        default=lambda self: self.env.user.company_id.currency_id,
+    )
+    deposit_value = fields.Monetary(
+        string="Deposit Value", default=0.0, currency_field="currency_id"
+    )
+    state = fields.Selection([("in", "Store"), ("out", "Customer")])
 
     _sql_constraints = [
         (

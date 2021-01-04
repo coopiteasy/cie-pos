@@ -7,6 +7,9 @@
           <field name="name"/>
           <field name="barcode"/>
           <field name="weight"/>
+          <field name="currency_id" invisible="1"/>
+          <field name="deposit_value" widget="monetary"/>
+          <field name="state"/>
         </tree>
       </field>
     </record>
@@ -21,6 +24,9 @@
               <field name="name"/>
               <field name="barcode"/>
               <field name="weight"/>
+              <field name="currency_id" invisible="1"/>
+              <field name="deposit_value" widget="monetary"/>
+              <field name="state"/>
             </group>
           </sheet>
         </form>
