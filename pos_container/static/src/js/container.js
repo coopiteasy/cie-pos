@@ -347,8 +347,13 @@ odoo.define('pos_container.container', function (require) {
         },
 
         show: function(){
+            this.set_deposit_value(0);
+            this.set_state("in");
             this._super();
             var self = this;
+            this.$('#input_deposit_value').keyup(function (event) {
+                self.onchange_deposit_value(event);
+            });
 
             this.$('.next,.add-container').click(function(){
                 self.create_container();
@@ -358,6 +363,14 @@ odoo.define('pos_container.container', function (require) {
                 this.chrome.widget.keyboard.connect($(this.el.querySelector('.container-name input')));
             }
         },
+        set_deposit_value: function (value){
+            this.deposit_value = value;
+        },
+
+        set_state: function (state){
+            this.state = state;
+        },
+
         get_product: function(){
             return this.pos.get_container_product();
         },
@@ -366,14 +379,20 @@ odoo.define('pos_container.container', function (require) {
             var fields = {};
 
             fields['weight'] = this.weight;
+            fields['deposit_value'] = this.deposit_value
 
             this.$('.container-name .detail').each(function(idx,el){
                 fields['name'] = el.value;
+            });
 
+            this.$('.deposit-value .detail').each(function(idx,el){
+                fields['deposit_value'] = el.value;
             });
 
             fields.barcode = this.gui.get_current_screen_param('barcode') || false;
             fields.name = fields.name || _t('Container');
+            fields.deposit_value = fields.deposit_value || 0.0;
+            fields.state = "in";
 
             this.pos.push_container(fields).then(
                 this.pushed_container(fields["barcode"])
@@ -388,6 +407,22 @@ odoo.define('pos_container.container', function (require) {
             if (this.pos.config.iface_vkeyboard && this.chrome.widget.keyboard) {
                 this.chrome.widget.keyboard.hide();
             }
+        },
+        onchange_deposit_value: function () {
+            var deposit_value = this.check_sanitize_value('#input_deposit_value');
+            this.set_deposit_value(deposit_value);
+        },
+
+        check_sanitize_value: function (input_name) {
+            var res = this.$(input_name)[0].value.replace(',', '.').trim();
+            console.log(res)
+            if (isNaN(res)) {
+                this.$(input_name).css("background-color", "#F66");
+                return undefined;
+            }
+            this.$(input_name).css("background-color", "#FFF");
+            console.log(parseFloat(res, 10))
+            return parseFloat(res, 10);
         },
     });
 

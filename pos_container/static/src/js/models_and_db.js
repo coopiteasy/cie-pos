@@ -131,7 +131,7 @@ odoo.define('pos_container.models_and_db', function (require) {
 
             options = options || {};
             var timeout = typeof options.timeout === 'number' ? options.timeout : 7500 * containers.length;
-
+            console.log(containers)
             return rpc.query({
                     model: 'pos.container',
                     method: 'create_from_ui',
@@ -609,7 +609,7 @@ odoo.define('pos_container.models_and_db', function (require) {
 
     models.load_models({
         model: 'pos.container',
-        fields: ['name','barcode', 'weight'],
+        fields: ['name','barcode', 'weight', 'deposit_value', 'state'],
         loaded: function(self, containers){
             self.db.add_containers(containers);
             return self.load_placeholder_product();
