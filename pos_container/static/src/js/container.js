@@ -379,19 +379,14 @@ odoo.define('pos_container.container', function (require) {
             var fields = {};
 
             fields['weight'] = this.weight;
-            fields['deposit_value'] = this.deposit_value
 
             this.$('.container-name .detail').each(function(idx,el){
                 fields['name'] = el.value;
             });
 
-            this.$('.deposit-value .detail').each(function(idx,el){
-                fields['deposit_value'] = el.value;
-            });
-
             fields.barcode = this.gui.get_current_screen_param('barcode') || false;
             fields.name = fields.name || _t('Container');
-            fields.deposit_value = fields.deposit_value || 0.0;
+            fields.deposit_value = parseFloat(this.deposit_value) || 0.0;
             fields.state = "in";
 
             this.pos.push_container(fields).then(
@@ -415,14 +410,12 @@ odoo.define('pos_container.container', function (require) {
 
         check_sanitize_value: function (input_name) {
             var res = this.$(input_name)[0].value.replace(',', '.').trim();
-            console.log(res)
             if (isNaN(res)) {
                 this.$(input_name).css("background-color", "#F66");
                 return undefined;
             }
             this.$(input_name).css("background-color", "#FFF");
-            console.log(parseFloat(res, 10))
-            return parseFloat(res, 10);
+            return parseFloat(res);
         },
     });
 

@@ -32,6 +32,14 @@ odoo.define('pos_container.models_and_db', function (require) {
             }
             return this.container_product
         },
+
+        get_returnable_container_product: function(){
+            if (!this.returnable_container_product){
+                this.returnable_container_product = this.db.get_product_by_barcode(
+                    'RETURNABLE');
+            }
+            return this.returnable_container_product
+        },
         scan_container: function(parsed_code){
             var selected_order = this.get_order();
             var container = this.db.get_container_by_barcode(
@@ -40,8 +48,13 @@ odoo.define('pos_container.models_and_db', function (require) {
             if(!container){
                 return false;
             }
-
-            selected_order.add_container(container);
+            var previous_state = container.state
+            if (container.state && container.deposit_value && container.deposit_value > 0){
+                selected_order.add_returnable_container(container);
+            }
+            if (previous_state != "out"){
+                selected_order.add_container(container);
+            }
             return true;
         },
         // reload the list of container, returns as a deferred that resolves if there were
@@ -78,7 +91,8 @@ odoo.define('pos_container.models_and_db', function (require) {
             var fields = _.find(this.models,function(model){
                 return model.model === 'product.product';
             }).fields;
-            var domain = [['barcode', '=', 'CONTAINER'], ['active', '=', false]];
+            var domain = ['&', ['active', '=', false], '|', ['barcode', '=', 'CONTAINER'],['barcode', '=', 'RETURNABLE']];
+
             // no need to load it when active because it is already done in standard
             return rpc.query({
                 model: 'product.product',
@@ -131,7 +145,6 @@ odoo.define('pos_container.models_and_db', function (require) {
 
             options = options || {};
             var timeout = typeof options.timeout === 'number' ? options.timeout : 7500 * containers.length;
-            console.log(containers)
             return rpc.query({
                     model: 'pos.container',
                     method: 'create_from_ui',
@@ -227,6 +240,32 @@ odoo.define('pos_container.models_and_db', function (require) {
 
             this.select_orderline(this.get_last_orderline());
         },
+
+        add_returnable_container: function(container, options){
+            if(this._printed){
+                this.destroy();
+                return this.pos.get_order().add_returnable_container(container, options);
+            }
+            options = options || {};
+            var attr = JSON.parse(JSON.stringify(container));
+            attr.pos = this.pos;
+            attr.order = this;
+            var product = this.pos.get_returnable_container_product();
+            var line = new models.Orderline({}, {
+                pos: this.pos, order: this, product: product});
+            line.set_container(container);
+            if (container.state == "in"){
+                container.state = "out";
+                line.set_unit_price(container.deposit_value)
+
+            } else if (container.state == "out"){
+                container.state = "in";
+                line.set_unit_price(- container.deposit_value)
+            }
+            this.orderlines.add(line);
+            this.select_orderline(this.get_last_orderline());
+        },
+
         has_tare_line: function(mode){
             var orderlines = this.orderlines.models
             for(var i=0; i < orderlines.length; i++){
