@@ -226,7 +226,7 @@ odoo.define('pos_container.models_and_db', function (require) {
             var fields = {};
             fields.id = container.id || false;
             fields.weight = container.weight;
-            fields.barcode = container.barcode;
+            //fields.barcode = container.barcode;
             fields.name = container.name;
             fields.deposit_value = container.deposit_value;
             fields.state = container.state;
