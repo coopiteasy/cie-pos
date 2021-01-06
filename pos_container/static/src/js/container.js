@@ -347,7 +347,7 @@ odoo.define('pos_container.container', function (require) {
         },
 
         show: function(){
-            this.set_deposit_value(0);
+            this.set_deposit_value(0.0);
             this.set_state("in");
             this._super();
             var self = this;

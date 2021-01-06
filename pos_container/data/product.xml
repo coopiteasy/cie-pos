@@ -19,14 +19,14 @@
 
     </record>
         <record id="temporary_returnable_container_product" model="product.product">
-        <field name="name">Returnable Container without product</field>
+        <field name="name">Returnable Container</field>
             <!-- The barcode is used to find it from the POS -->
         <field name="barcode">RETURNABLE</field>
         <field name="uom_id" ref="uom.product_uom_unit"/>
         <field name="uom_po_id" ref="uom.product_uom_unit"/>
         <field name="purchase_ok" eval="False"/>
         <field name="description">
-            This product is used to describe POS order lines having a returnable container but no product yet
+            This product is used to describe POS order lines having a returnable container
         </field>
         <field name="list_price">0</field>
         <field name="available_in_pos" eval="True"/>

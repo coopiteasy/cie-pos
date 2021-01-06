@@ -32,7 +32,6 @@ odoo.define('pos_container.models_and_db', function (require) {
             }
             return this.container_product
         },
-
         get_returnable_container_product: function(){
             if (!this.returnable_container_product){
                 this.returnable_container_product = this.db.get_product_by_barcode(
@@ -44,7 +43,6 @@ odoo.define('pos_container.models_and_db', function (require) {
             var selected_order = this.get_order();
             var container = this.db.get_container_by_barcode(
                 parsed_code.base_code);
-
             if(!container){
                 return false;
             }
@@ -52,7 +50,7 @@ odoo.define('pos_container.models_and_db', function (require) {
             if (container.state && container.deposit_value && container.deposit_value > 0){
                 selected_order.add_returnable_container(container);
             }
-            if (previous_state != "out"){
+            if (previous_state !== "out"){
                 selected_order.add_container(container);
             }
             return true;
@@ -186,7 +184,7 @@ odoo.define('pos_container.models_and_db', function (require) {
             var self = this;
             this.set('synch',{ state: 'connecting', pending: orders.length});
 
-            return self._save_containers_to_server(self.db.get_containers_sorted())
+            return self._save_containers_to_server(self.db.get_containers_sorted(), options)
                 .then(function(container_ids) {
                     for (var i=0; i < orders.length; i++){
                         if (orders[i].data.lines) {
@@ -217,6 +215,71 @@ odoo.define('pos_container.models_and_db', function (require) {
                         self.set('synch', { state: 'disconnected', pending: pending });
                     }
                 });
+        },
+
+        // what happens when we save the changes on the container -> we fetch the fields, sanitize them,
+        // send them to the backend for update, and call saved_container_details() when the server tells us the
+        // save was successfull.
+        save_container_details: function(container) {
+            var self = this;
+
+            var fields = {};
+            fields.id = container.id || false;
+            fields.weight = container.weight;
+            fields.barcode = container.barcode;
+            fields.name = container.name;
+            fields.deposit_value = container.deposit_value;
+            fields.state = container.state;
+
+            rpc.query({
+                    model: 'pos.container',
+                    method: 'create_from_ui',
+                    args: [fields],
+                })
+                .then(function(container_id){
+                    self.saved_container_details(container_id);
+                },function(err,ev){
+                    ev.preventDefault();
+                    var error_body = _t('Your Internet connection is probably down.');
+                    if (err.data) {
+                        var except = err.data;
+                        error_body = except.arguments && except.arguments[0] || except.message || error_body;
+                    }
+                    self.gui.show_popup('error',{
+                        'title': _t('Error: Could not Save Changes'),
+                        'body': error_body,
+                    });
+                });
+        },
+        // what happens when we've just pushed modifications for a container of id container_id
+        saved_container_details: function(container_id){
+            var self = this;
+            return this.reload_containers().then(function(){
+                var container = self.db.get_container_by_id(container_id);
+                if (container) {
+
+                } else {
+                    // should never happen, because create_from_ui must return the id of the container it
+                    // has created, and reload_containers() must have loaded the newly created container.
+                }
+            }).always(function(){});
+        },
+        // This fetches container changes on the server, and in case of changes,
+        // rerenders the affected views
+        reload_containers: function() {
+            var self = this;
+            return this.load_new_containers().then(function () {
+                // containers may have changed in the backend
+                //self.partner_cache = new screens.DomCache();
+
+                //self.render_list(self.pos.db.get_partners_sorted(1000));
+
+                // update the currently assigned client if it has been changed in db.
+                //var curr_client = self.pos.get_order().get_client();
+                //if (curr_client) {
+                    //self.pos.get_order().set_client(self.pos.db.get_partner_by_id(curr_client.id));
+                //}
+            });
         },
     });
 
@@ -262,6 +325,7 @@ odoo.define('pos_container.models_and_db', function (require) {
                 container.state = "in";
                 line.set_unit_price(- container.deposit_value)
             }
+            this.pos.save_container_details(container);
             this.orderlines.add(line);
             this.select_orderline(this.get_last_orderline());
         },
