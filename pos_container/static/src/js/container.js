@@ -378,6 +378,11 @@ odoo.define('pos_container.container', function (require) {
             var self = this;
             var fields = {};
 
+            if (isNaN(this.deposit_value) || this.deposit_value < 0){
+                this.gui.show_popup('error',_t('Invalid Deposit Value'));
+                return;
+            }
+
             fields['weight'] = this.weight;
 
             this.$('.container-name .detail').each(function(idx,el){
@@ -387,11 +392,34 @@ odoo.define('pos_container.container', function (require) {
             fields.barcode = this.gui.get_current_screen_param('barcode') || false;
             fields.name = fields.name || _t('Container');
             fields.deposit_value = parseFloat(this.deposit_value) || 0.0;
-            fields.state = "in";
-
+            fields.state = this.state || "in";
+            /*
             this.pos.push_container(fields).then(
                 this.pushed_container(fields["barcode"])
-            );
+            );*/
+            var container = fields;
+            rpc.query({
+                model: 'pos.container',
+                method: 'create_from_ui',
+                args: [fields],
+            })
+            .then(function(container_id){
+                container.id = container_id
+                self.pos.db.container_by_id[container_id] = container
+                self.pos.saved_container_details(container_id);
+                self.gui.show_screen(self.next_screen);
+            },function(err,ev){
+                ev.preventDefault();
+                var error_body = _t('Your Internet connection is probably down.');
+                if (err.data) {
+                    var except = err.data;
+                    error_body = except.arguments && except.arguments[0] || except.message || error_body;
+                }
+                self.gui.show_popup('error',{
+                    'title': _t('Error: Could not Save Changes'),
+                    'body': error_body,
+                });
+            });
         },
         pushed_container: function(barcode){
             var self = this;
