@@ -28,6 +28,8 @@
         <field name="description">
             This product is used to describe POS order lines having a returnable container
         </field>
+        <field name="type">consu</field>
+        <field name="taxes_id" eval="[]"/>
         <field name="list_price">0</field>
         <field name="available_in_pos" eval="True"/>
         <field name="to_weight" eval="False"/>
