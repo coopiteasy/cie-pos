@@ -133,10 +133,10 @@ msgstr "Contenant pour produits en vrac"
 
 #. module: pos_container
 #. openerp-web
-#: code:addons/pos_container/static/src/xml/pos.xml:134
+#: code:addons/pos_container/static/src/xml/pos.xml:150
 #, python-format
 msgid "Container name:"
-msgstr "Nom du contenant:"
+msgstr "Nom du contenant :"
 
 #. module: pos_container
 #: selection:barcode.rule,type:0
@@ -384,6 +384,12 @@ msgstr "Type"
 #: selection:barcode.rule,type:0
 msgid "Unit Product"
 msgstr "Unité de produit"
+
+#. module: pos_container
+#: model:product.product,uom_name:pos_container.temporary_returnable_container_product
+#: model:product.template,uom_name:pos_container.temporary_returnable_container_product_product_template
+msgid "Unit(s)"
+msgstr "Unité(s)"
 
 #. module: pos_container
 #. openerp-web
