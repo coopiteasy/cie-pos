@@ -20,20 +20,32 @@ msgstr ""
 #. module: pos_container
 #: model:product.product,description:pos_container.temporary_container_product
 #: model:product.template,description:pos_container.temporary_container_product_product_template
-msgid ""
-"\n"
+msgid "\n"
 "            This product is used to describe POS order lines having a container but no product yet\n"
 "        "
 msgstr ""
 
 #. module: pos_container
+#: model:product.product,description:pos_container.temporary_returnable_container_product
+#: model:product.template,description:pos_container.temporary_returnable_container_product_product_template
+msgid "\n"
+"            This product is used to describe POS order lines having a returnable container\n"
+"        "
+msgstr ""
+
+#. module: pos_container
 #. openerp-web
-#: code:addons/pos_container/static/src/xml/pos.xml:161
-#: code:addons/pos_container/static/src/xml/pos.xml:202
-#: code:addons/pos_container/static/src/xml/pos.xml:252
+#: code:addons/pos_container/static/src/xml/pos.xml:181
+#: code:addons/pos_container/static/src/xml/pos.xml:222
+#: code:addons/pos_container/static/src/xml/pos.xml:291
 #, python-format
 msgid "% discount"
 msgstr "% de réduction"
+
+#. module: pos_container
+#: sql_constraint:pos.container:0
+msgid "A barcode can only be assigned to one container !"
+msgstr "Un code-barre ne peut être assigné qu'à un seul contenant !"
 
 #. module: pos_container
 #. openerp-web
@@ -154,11 +166,39 @@ msgid "Created on"
 msgstr "Créé le"
 
 #. module: pos_container
+#: model:ir.model.fields,field_description:pos_container.field_pos_container__currency_id
+msgid "Currency"
+msgstr "Devise"
+
+#. module: pos_container
+#. openerp-web
+#: code:addons/pos_container/static/src/xml/pos.xml:85
+#: selection:pos.container,state:0
+#, python-format
+msgid "Customer"
+msgstr "Client"
+
+#. module: pos_container
 #. openerp-web
 #: code:addons/pos_container/static/src/xml/pos.xml:30
 #, python-format
 msgid "Delete container"
 msgstr "Supprimer le contenant"
+
+#. module: pos_container
+#. openerp-web
+#: code:addons/pos_container/static/src/xml/pos.xml:50
+#: model:ir.model.fields,field_description:pos_container.field_pos_container__deposit_value
+#, python-format
+msgid "Deposit Value"
+msgstr "Valeur consigne"
+
+#. module: pos_container
+#. openerp-web
+#: code:addons/pos_container/static/src/xml/pos.xml:154
+#, python-format
+msgid "Deposit value ("
+msgstr "Valeur consigne ("
 
 #. module: pos_container
 #. openerp-web
@@ -205,6 +245,13 @@ msgstr "Poids Brut :"
 #: model:ir.model.fields,field_description:pos_container.field_pos_container__id
 msgid "ID"
 msgstr "ID"
+
+#. module: pos_container
+#. openerp-web
+#: code:addons/pos_container/static/src/js/container.js:389
+#, python-format
+msgid "Invalid Deposit Value"
+msgstr "Valeur de consigne invalide"
 
 #. module: pos_container
 #: model:ir.model.fields,field_description:pos_container.field_pos_container____last_update
@@ -268,6 +315,12 @@ msgid "Priced Product"
 msgstr "Article à prix fixe"
 
 #. module: pos_container
+#: model:product.product,name:pos_container.temporary_returnable_container_product
+#: model:product.template,name:pos_container.temporary_returnable_container_product_product_template
+msgid "Returnable Container"
+msgstr "Contenant consigné"
+
+#. module: pos_container
 #. openerp-web
 #: code:addons/pos_container/static/src/xml/pos.xml:137
 #, python-format
@@ -287,6 +340,22 @@ msgstr "Recherche contenant"
 #, python-format
 msgid "Select a container"
 msgstr "Sélection contenant"
+
+#. module: pos_container
+#. openerp-web
+#: code:addons/pos_container/static/src/xml/pos.xml:51
+#: model:ir.model.fields,field_description:pos_container.field_pos_container__state
+#, python-format
+msgid "State"
+msgstr "Statut"
+
+#. module: pos_container
+#. openerp-web
+#: code:addons/pos_container/static/src/xml/pos.xml:82
+#: selection:pos.container,state:0
+#, python-format
+msgid "Store"
+msgstr "Magasin"
 
 #. module: pos_container
 #. openerp-web
@@ -325,7 +394,7 @@ msgstr "Poids"
 
 #. module: pos_container
 #: model:ir.model.fields,field_description:pos_container.field_pos_container__weight
-msgid "Weight (g)"
+msgid "Weight (kg)"
 msgstr "Poids (kg)"
 
 #. module: pos_container
