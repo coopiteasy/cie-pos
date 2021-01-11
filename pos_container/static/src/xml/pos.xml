@@ -151,7 +151,7 @@
                         <input class='detail container-name' name='container_name' placeholder="Container"></input>
                     </div>
                     <div class='deposit-value'>
-                        <span class='label'>Deposit value: </span><br/>
+                        <span class='label'>Deposit value (<t t-esc="widget.get_currency()"/>): </span><br/>
                         <input class='detail deposit-value' id="input_deposit_value" name='deposit_value' placeholder="0.00"></input>
                     </div>
                     <div class='add-container'>

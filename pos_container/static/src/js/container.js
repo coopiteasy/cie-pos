@@ -10,6 +10,7 @@ odoo.define('pos_container.container', function (require) {
     "use strict";
 
     var models_and_db = require('pos_container.models_and_db');
+    var PosBaseWidget = require('point_of_sale.BaseWidget');
 
     var screens = require('point_of_sale.screens');
     var gui = require('point_of_sale.gui');
@@ -20,6 +21,12 @@ odoo.define('pos_container.container', function (require) {
     var QWeb = core.qweb;
     var _t = core._t;
 
+    PosBaseWidget.include({
+        get_currency: function(){
+            var currency = (this.pos && this.pos.currency) ? this.pos.currency : {symbol:'$', position: 'after', rounding: 0.01, decimals: 2};
+            return currency.symbol
+        },
+    });
 
     var TareButton = screens.ActionButtonWidget.extend({
         template: 'TareButton',
