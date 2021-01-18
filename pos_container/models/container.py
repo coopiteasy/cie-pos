@@ -26,7 +26,9 @@ class Container(models.Model):
     deposit_value = fields.Monetary(
         string="Deposit Value", default=0.0, currency_field="currency_id"
     )
-    state = fields.Selection([("in", "Store"), ("out", "Customer")])
+    state = fields.Selection(
+        [("in", "Store"), ("out", "Customer")], default="in"
+    )
 
     _sql_constraints = [
         (
