@@ -461,7 +461,7 @@ odoo.define('pos_container.container', function (require) {
 
     screens.ProductListWidget.include({
         render_product: function(product){
-            if(product.barcode != 'CONTAINER'){
+            if(product.barcode != 'CONTAINER' && product.barcode != 'RETURNABLE'){
                 return this._super(product);
             } else {
                 return document.createElement('div');
