@@ -47,6 +47,8 @@
                                                  <th>Name</th>
                                                  <th>Barcode</th>
                                                  <th>Weight</th>
+                                                 <th>Deposit Value</th>
+                                                 <th>State</th>
                                              </tr>
                                          </thead>
                                          <tbody class="container-list-contents">
@@ -71,6 +73,20 @@
             </td>
             <td>
                 <t t-esc="container.weight"/>
+            </td>
+            <td>
+                <t t-esc="widget.format_currency(container.deposit_value)"/>
+            </td>
+            <td>
+                <t t-if="container.state == 'in'">
+                    <span class="container-state in">Store</span>
+                </t>
+                <t t-elif="container.state == 'out'">
+                    <span class="container-state out">Customer</span>
+                </t>
+                <t t-else="">
+                    <span class="container-state empty">-</span>
+                </t>
             </td>
         </tr>
     </t>
@@ -133,6 +149,10 @@
                     <div class='container-name'>
                         <span class='label'>Container name: </span><br/>
                         <input class='detail container-name' name='container_name' placeholder="Container"></input>
+                    </div>
+                    <div class='deposit-value'>
+                        <span class='label'>Deposit value (<t t-esc="widget.get_currency()"/>): </span><br/>
+                        <input class='detail deposit-value' id="input_deposit_value" name='deposit_value' placeholder="0.00"></input>
                     </div>
                     <div class='add-container'>
                         Save

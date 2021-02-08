@@ -26,7 +26,7 @@
     cursor: pointer;
 }
 
-.pos .scale-screen .container-name,.container-barcode{
+.pos .scale-screen .container-name,.container-barcode,.deposit-value {
     text-align: center;
     font-size: 25px;
     border-radius: 3px;
@@ -105,7 +105,7 @@
     opacity: 0;
     cursor: pointer;
 }
-.pos .containerlist-screen .container-name {
+.pos .containerlist-screen .container-name{
     font-size: 32px;
     line-height: 64px;
     margin-bottom:16px;
@@ -158,7 +158,7 @@
     font-size: 14px;
     box-sizing: border-box;
 }
-.pos .containerlist-screen .container-details input.container-name {
+.pos .containerlist-screen .container-details input.container-name{
     font-size: 24px;
     line-height: 24px;
     margin: 18px 6px;

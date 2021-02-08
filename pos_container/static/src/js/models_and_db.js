@@ -10,6 +10,7 @@ odoo.define('pos_container.models_and_db', function (require) {
 
     var PosDB = require('point_of_sale.DB');
     var models = require('point_of_sale.models');
+    var screens = require('point_of_sale.screens');
     var rpc = require('web.rpc');
     var config = require('web.config');
 
@@ -32,16 +33,27 @@ odoo.define('pos_container.models_and_db', function (require) {
             }
             return this.container_product
         },
+        get_returnable_container_product: function(){
+            if (!this.returnable_container_product){
+                this.returnable_container_product = this.db.get_product_by_barcode(
+                    'RETURNABLE');
+            }
+            return this.returnable_container_product
+        },
         scan_container: function(parsed_code){
             var selected_order = this.get_order();
             var container = this.db.get_container_by_barcode(
                 parsed_code.base_code);
-
             if(!container){
                 return false;
             }
-
-            selected_order.add_container(container);
+            var previous_state = container.state
+            if (container.state && container.deposit_value && container.deposit_value > 0){
+                selected_order.add_returnable_container(container);
+            }
+            if (previous_state !== "out"){
+                selected_order.add_container(container);
+            }
             return true;
         },
         // reload the list of container, returns as a deferred that resolves if there were
@@ -52,7 +64,7 @@ odoo.define('pos_container.models_and_db', function (require) {
             var fields = _.find(this.models,function(model){
                 return model.model === 'pos.container';
             }).fields;
-            var domain = [];
+            var domain = [['write_date','>',this.db.get_partner_write_date()]];
             rpc.query({
                 model: 'pos.container',
                 method: 'search_read',
@@ -78,7 +90,8 @@ odoo.define('pos_container.models_and_db', function (require) {
             var fields = _.find(this.models,function(model){
                 return model.model === 'product.product';
             }).fields;
-            var domain = [['barcode', '=', 'CONTAINER'], ['active', '=', false]];
+            var domain = ['&', ['active', '=', false], '|', ['barcode', '=', 'CONTAINER'], ['barcode', '=', 'RETURNABLE']];
+
             // no need to load it when active because it is already done in standard
             return rpc.query({
                 model: 'product.product',
@@ -131,7 +144,6 @@ odoo.define('pos_container.models_and_db', function (require) {
 
             options = options || {};
             var timeout = typeof options.timeout === 'number' ? options.timeout : 7500 * containers.length;
-
             return rpc.query({
                     model: 'pos.container',
                     method: 'create_from_ui',
@@ -173,7 +185,7 @@ odoo.define('pos_container.models_and_db', function (require) {
             var self = this;
             this.set('synch',{ state: 'connecting', pending: orders.length});
 
-            return self._save_containers_to_server(self.db.get_containers_sorted())
+            return self._save_containers_to_server(self.db.get_containers_sorted(), options)
                 .then(function(container_ids) {
                     for (var i=0; i < orders.length; i++){
                         if (orders[i].data.lines) {
@@ -205,6 +217,71 @@ odoo.define('pos_container.models_and_db', function (require) {
                     }
                 });
         },
+
+        // what happens when we save the changes on the container -> we fetch the fields, sanitize them,
+        // send them to the backend for update, and call saved_container_details() when the server tells us the
+        // save was successfull.
+        save_container_details: function(container) {
+            var self = this;
+
+            var fields = {};
+            fields.id = container.id || false;
+            fields.weight = container.weight;
+            fields.name = container.name;
+            fields.deposit_value = container.deposit_value;
+            fields.state = container.state;
+
+            rpc.query({
+                    model: 'pos.container',
+                    method: 'create_from_ui',
+                    args: [fields],
+                })
+                .then(function(container_id){
+                    container["id"] = container_id
+                    self.db.container_by_id[container.id] = container
+                    self.saved_container_details(container_id);
+                },function(err,ev){
+                    ev.preventDefault();
+                    var error_body = _t('Your Internet connection is probably down.');
+                    if (err.data) {
+                        var except = err.data;
+                        error_body = except.arguments && except.arguments[0] || except.message || error_body;
+                    }
+                    self.gui.show_popup('error',{
+                        'title': _t('Error: Could not Save Changes'),
+                        'body': error_body,
+                    });
+                });
+        },
+        // what happens when we've just pushed modifications for a container of id container_id
+        saved_container_details: function(container_id){
+            var self = this;
+            return this.reload_containers().then(function(){
+                var container = self.db.get_container_by_id(container_id);
+                if (container) {
+                    self.db.container_by_barcode[container.barcode] = container;
+                } else {
+                    // should never happen, because create_from_ui must return the id of the container it
+                    // has created, and reload_containers() must have loaded the newly created container.
+                }
+            }).always(function(){});
+        },
+        // This fetches container changes on the server, and in case of changes,
+        // rerenders the affected views
+        reload_containers: function() {
+            var self = this;
+            return this.load_new_containers().then(function () {
+                // containers may have changed in the backend
+                self.gui.screen_instances.containerlist.container_cache = new screens.DomCache();
+                self.gui.screen_instances.containerlist.render_list(self.db.get_containers_sorted(1000));
+
+                // update the currently assigned client if it has been changed in db.
+                //var curr_client = self.pos.get_order().get_client();
+                //if (curr_client) {
+                    //self.pos.get_order().set_client(self.pos.db.get_partner_by_id(curr_client.id));
+                //}
+            });
+        },
     });
 
     models.Order = models.Order.extend({
@@ -227,6 +304,33 @@ odoo.define('pos_container.models_and_db', function (require) {
 
             this.select_orderline(this.get_last_orderline());
         },
+
+        add_returnable_container: function(container, options){
+            if(this._printed){
+                this.destroy();
+                return this.pos.get_order().add_returnable_container(container, options);
+            }
+            options = options || {};
+            var attr = JSON.parse(JSON.stringify(container));
+            attr.pos = this.pos;
+            attr.order = this;
+            var product = this.pos.get_returnable_container_product();
+            var line = new models.Orderline({}, {
+                pos: this.pos, order: this, product: product});
+            if (container.state == "in"){
+                container.state = "out";
+                line.set_unit_price(container.deposit_value)
+
+            } else if (container.state == "out"){
+                container.state = "in";
+                line.set_unit_price(- container.deposit_value)
+            }
+            line.set_container(container);
+            this.pos.save_container_details(container);
+            this.orderlines.add(line);
+            this.select_orderline(this.get_last_orderline());
+        },
+
         has_tare_line: function(mode){
             var orderlines = this.orderlines.models
             for(var i=0; i < orderlines.length; i++){
@@ -507,16 +611,26 @@ odoo.define('pos_container.models_and_db', function (require) {
 
             return str;
         },
+
+        /**
+         * Inspired by POS `add_partners` function
+         * @param containers
+         * @returns {number} updated_count
+         */
         add_containers: function(containers) {
             var updated_count = 0;
             var new_write_date = '';
+            var container;
             for(var i = 0, len = containers.length; i < len; i++) {
-                var container = containers[i];
+                container = containers[i];
+
+                var local_container_date = (this.container_write_date || '').replace(/^(\d{4}-\d{2}-\d{2}) ((\d{2}:?){3})$/, '$1T$2Z');
+                var dist_container_date = (container.write_date || '').replace(/^(\d{4}-\d{2}-\d{2}) ((\d{2}:?){3})$/, '$1T$2Z');
 
                 if (this.container_write_date &&
                     this.container_by_barcode[container.barcode] &&
-                    new Date(this.container_write_date).getTime() + 1000 >=
-                    new Date(container.write_date).getTime() ) {
+                    new Date(local_container_date).getTime() + 1000 >=
+                    new Date(dist_container_date).getTime() ) {
                     // FIXME: The write_date is stored with milisec precision in the database
                     // but the dates we get back are only precise to the second. This means when
                     // you read containers modified strictly after time X, you get back containers that were
@@ -529,6 +643,7 @@ odoo.define('pos_container.models_and_db', function (require) {
                     this.container_sorted.push(container.barcode);
                 }
                 this.container_by_barcode[container.barcode] = container;
+                this.container_by_id[container.id] = container;
 
                 updated_count += 1;
             }
@@ -543,7 +658,7 @@ odoo.define('pos_container.models_and_db', function (require) {
                 this.container_by_id = {};
 
                 for (var barcode in this.container_by_barcode) {
-                    var container = this.container_by_barcode[barcode];
+                    container = this.container_by_barcode[barcode];
 
                     if(container.id){
                         this.container_by_id[container.id] = container;
@@ -609,7 +724,7 @@ odoo.define('pos_container.models_and_db', function (require) {
 
     models.load_models({
         model: 'pos.container',
-        fields: ['name','barcode', 'weight'],
+        fields: ['name','barcode', 'weight', 'deposit_value', 'state', 'write_date'],
         loaded: function(self, containers){
             self.db.add_containers(containers);
             return self.load_placeholder_product();

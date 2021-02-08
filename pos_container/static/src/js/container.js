@@ -10,6 +10,7 @@ odoo.define('pos_container.container', function (require) {
     "use strict";
 
     var models_and_db = require('pos_container.models_and_db');
+    var PosBaseWidget = require('point_of_sale.BaseWidget');
 
     var screens = require('point_of_sale.screens');
     var gui = require('point_of_sale.gui');
@@ -20,6 +21,12 @@ odoo.define('pos_container.container', function (require) {
     var QWeb = core.qweb;
     var _t = core._t;
 
+    PosBaseWidget.include({
+        get_currency: function(){
+            var currency = (this.pos && this.pos.currency) ? this.pos.currency : {symbol:'$', position: 'after', rounding: 0.01, decimals: 2};
+            return currency.symbol
+        },
+    });
 
     var TareButton = screens.ActionButtonWidget.extend({
         template: 'TareButton',
@@ -347,8 +354,13 @@ odoo.define('pos_container.container', function (require) {
         },
 
         show: function(){
+            this.set_deposit_value(0.0);
+            this.set_state("in");
             this._super();
             var self = this;
+            this.$('#input_deposit_value').keyup(function (event) {
+                self.onchange_deposit_value(event);
+            });
 
             this.$('.next,.add-container').click(function(){
                 self.create_container();
@@ -358,6 +370,14 @@ odoo.define('pos_container.container', function (require) {
                 this.chrome.widget.keyboard.connect($(this.el.querySelector('.container-name input')));
             }
         },
+        set_deposit_value: function (value){
+            this.deposit_value = value;
+        },
+
+        set_state: function (state){
+            this.state = state;
+        },
+
         get_product: function(){
             return this.pos.get_container_product();
         },
@@ -365,19 +385,48 @@ odoo.define('pos_container.container', function (require) {
             var self = this;
             var fields = {};
 
+            if (isNaN(this.deposit_value) || this.deposit_value < 0){
+                this.gui.show_popup('error',_t('Invalid Deposit Value'));
+                return;
+            }
+
             fields['weight'] = this.weight;
 
             this.$('.container-name .detail').each(function(idx,el){
                 fields['name'] = el.value;
-
             });
 
             fields.barcode = this.gui.get_current_screen_param('barcode') || false;
             fields.name = fields.name || _t('Container');
-
+            fields.deposit_value = parseFloat(this.deposit_value) || 0.0;
+            fields.state = this.state || "in";
+            /*
             this.pos.push_container(fields).then(
                 this.pushed_container(fields["barcode"])
-            );
+            );*/
+            var container = fields;
+            rpc.query({
+                model: 'pos.container',
+                method: 'create_from_ui',
+                args: [fields],
+            })
+            .then(function(container_id){
+                container.id = container_id
+                self.pos.db.container_by_id[container_id] = container
+                self.pos.saved_container_details(container_id);
+                self.gui.show_screen(self.next_screen);
+            },function(err,ev){
+                ev.preventDefault();
+                var error_body = _t('Your Internet connection is probably down.');
+                if (err.data) {
+                    var except = err.data;
+                    error_body = except.arguments && except.arguments[0] || except.message || error_body;
+                }
+                self.gui.show_popup('error',{
+                    'title': _t('Error: Could not Save Changes'),
+                    'body': error_body,
+                });
+            });
         },
         pushed_container: function(barcode){
             var self = this;
@@ -389,6 +438,20 @@ odoo.define('pos_container.container', function (require) {
                 this.chrome.widget.keyboard.hide();
             }
         },
+        onchange_deposit_value: function () {
+            var deposit_value = this.check_sanitize_value('#input_deposit_value');
+            this.set_deposit_value(deposit_value);
+        },
+
+        check_sanitize_value: function (input_name) {
+            var res = this.$(input_name)[0].value.replace(',', '.').trim();
+            if (isNaN(res)) {
+                this.$(input_name).css("background-color", "#F66");
+                return undefined;
+            }
+            this.$(input_name).css("background-color", "#FFF");
+            return parseFloat(res);
+        },
     });
 
     gui.define_screen({
@@ -398,7 +461,7 @@ odoo.define('pos_container.container', function (require) {
 
     screens.ProductListWidget.include({
         render_product: function(product){
-            if(product.barcode != 'CONTAINER'){
+            if(product.barcode != 'CONTAINER' && product.barcode != 'RETURNABLE'){
                 return this._super(product);
             } else {
                 return document.createElement('div');
