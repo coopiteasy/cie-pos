@@ -12,8 +12,24 @@ odoo.define('pos_category_display.screens', function (require) {
                     buttons[i].removeEventListener('click', this.switch_category_handler);
                 }
             }
-        }
-    })
+        },
+        clear_search: function () {
+            this._super();
+            var _super = this._super.bind(this);
+            var input = this.el.querySelector(".searchbox input");
+            input.disabled = false;
+            input.style.width = "100px";
+            input.style["padding-right"] = "20px";
+            input.focus();
+
+            input.onblur = function() {
+                input.disabled = true;
+                input.style.width = 0;
+                input.style["padding-right"] = "4px";
+                _super();
+            };
+        },
+    });
 
     screens.ProductScreenWidget.include({
         show: function(){
@@ -24,9 +40,9 @@ odoo.define('pos_category_display.screens', function (require) {
             if (this.pos.config.pos_category_display === 'minimized'){
                 $breadcrumbs.hide();
                 $categories.hide();
-                $searchbox_input.removeAttr('placeholder');
-                // TODO toggle class to expand/reduce input
-
+                $searchbox_input.removeAttr("placeholder");
+                $searchbox_input.prop("disabled", true);
+                $searchbox_input.css({ width: 0, "padding-right": 4 });
             }
         },
     });
