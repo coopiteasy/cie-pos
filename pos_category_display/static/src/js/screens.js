@@ -23,10 +23,12 @@ odoo.define('pos_category_display.screens', function (require) {
             input.focus();
 
             input.onblur = function() {
-                input.disabled = true;
-                input.style.width = 0;
-                input.style["padding-right"] = "4px";
-                _super();
+                if (!input.value) {
+                    input.disabled = true;
+                    input.style.width = 0;
+                    input.style["padding-right"] = "4px";
+                    _super();
+                }
             };
         },
     });
