@@ -5,6 +5,7 @@ class PosOrder(models.Model):
     _inherit = "pos.order"
 
     receipt_sent = fields.Boolean(
+        string="Receipt sent by backend interface",
         readonly=True,
         default=False,
         copy=False,
@@ -61,3 +62,15 @@ class PosOrder(models.Model):
             "target": "new",
             "context": ctx,
         }
+
+    @api.model
+    def send_mail_receipt(self, pos_reference, email, body_from_ui, force=True):
+        order = self.search([("pos_reference", "=", pos_reference)])
+
+        order.note = "{}\n{} UTC Attempting to send mail receipt ".format(
+            order.note or "", fields.datetime.now()
+        )
+
+        return super(PosOrder, self).send_mail_receipt(
+            pos_reference, email, body_from_ui, force=True
+        )
