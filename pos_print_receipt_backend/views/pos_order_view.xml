@@ -7,6 +7,9 @@
             <xpath expr="//button[@name='%(point_of_sale.action_pos_payment)d']" position="after">
                 <button name="action_receipt_sent" string="Send &amp; Print Receipt" type="object" attrs="{'invisible': [('state', '=', 'draft')]}" class="oe_highlight" groups="point_of_sale.group_pos_user"/>
             </xpath>
+            <field name="fiscal_position_id" position="after">
+                <field name="receipt_sent" />
+            </field>
         </field>
     </record>
 </odoo>
