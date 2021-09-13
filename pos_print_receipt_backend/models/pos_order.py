@@ -1,3 +1,6 @@
+# Copyright 2021 Coop IT Easy SCRL fs
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+
 from odoo import _, api, fields, models
 
 
@@ -14,9 +17,7 @@ class PosOrder(models.Model):
 
     @api.multi
     def receipt_print(self):
-        self.filtered(lambda o: not o.receipt_sent).write(
-            {"receipt_sent": True}
-        )
+        self.filtered(lambda o: not o.receipt_sent).write({"receipt_sent": True})
         return (
             self.env.ref("pos_print_receipt_backend.action_report_receipt")
             .with_context(discard_logo_check=True)
@@ -25,8 +26,8 @@ class PosOrder(models.Model):
 
     @api.multi
     def action_receipt_sent(self):
-        """ Open a window to compose an email, with
-            email_template_pos_order_receipt message loaded by default
+        """Open a window to compose an email, with
+        email_template_pos_order_receipt message loaded by default
         """
         self.ensure_one()
         template = self.env.ref(
@@ -38,9 +39,7 @@ class PosOrder(models.Model):
         # have model_description in template language
         lang = self.env.context.get("lang")
         if template and template.lang:
-            lang = template._render_template(
-                template.lang, "pos.order", self.id
-            )
+            lang = template._render_template(template.lang, "pos.order", self.id)
         self = self.with_context(lang=lang)
         ctx = dict(
             default_model="pos.order",
@@ -62,15 +61,3 @@ class PosOrder(models.Model):
             "target": "new",
             "context": ctx,
         }
-
-    @api.model
-    def send_mail_receipt(self, pos_reference, email, body_from_ui, force=True):
-        order = self.search([("pos_reference", "=", pos_reference)])
-
-        order.note = "{}\n{} UTC Attempting to send mail receipt ".format(
-            order.note or "", fields.datetime.now()
-        )
-
-        return super(PosOrder, self).send_mail_receipt(
-            pos_reference, email, body_from_ui, force=True
-        )
