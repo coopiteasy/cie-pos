@@ -1,6 +1,6 @@
 /*
     POS Round cash Payment for odoo
-    Copyright (C) 2018 Coop IT Easy SCRLfs
+    Copyright (C) 2018 Coop IT Easy SC
     @author: Robin Keunen
     @author: Houssine BAKKALI
     The licence is in the file __manifest__.py
