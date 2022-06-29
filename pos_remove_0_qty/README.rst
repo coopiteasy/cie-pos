@@ -49,7 +49,7 @@ Authors
 ~~~~~~~
 
 * BEES coop SCRLfs
-* Coop IT Easy SCRLfs
+* Coop IT Easy SC
 
 Maintainers
 ~~~~~~~~~~~

@@ -5,7 +5,7 @@
     "name": "POS Category Display",
     "version": "12.0.1.0.0",
     "depends": ["point_of_sale"],
-    "author": "Coop IT Easy SCRLfs",
+    "author": "Coop IT Easy SC",
     "license": "AGPL-3",
     "category": "Point Of Sale",
     "website": "https://www.coopiteasy.be",

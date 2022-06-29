@@ -1,6 +1,6 @@
 /*
     POS Search with Accented/Unaccented characters module for Odoo
-    Copyright 2019 Coop IT Easy SCRLfs
+    Copyright 2019 Coop IT Easy SC
     @author: Vincent Van Rossem <vincent@coopiteasy.be>
     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 */
