@@ -19,9 +19,9 @@ POS Fast Customer Selection
 
 |badge1| |badge2| |badge3| 
 
-Allows a faster customer selection by:
-- focusing on the "Search Customers" searchbox on the Client List Screen
-- setting the customer when clicking on it
+Allows a faster customer research and selection by:
+  - focusing on the "Search Customers" searchbox on the Client List Screen
+  - immediately setting the customer when clicking on it
 
 **Table of contents**
 
