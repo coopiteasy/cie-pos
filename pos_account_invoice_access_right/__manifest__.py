@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 {
     "name": "POS Invoice Access Right",
-    "version": "12.0.1.0.0",
+    "version": "12.0.1.0.1",
     "depends": ["account", "point_of_sale"],
     "author": "Coop IT Easy SC",
     "license": "AGPL-3",
