@@ -23,7 +23,7 @@
     "author": "Robin Keunen <robin@coopiteasy.be>",
     "license": "AGPL-3",
     "category": "Point of Sale",
-    "website": "www.coopiteasy.be",
+    "website": "https://coopiteasy.be",
     "summary": """
         Adds information on POS product card.
         - display weight
