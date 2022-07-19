@@ -1,5 +1,5 @@
 # Copyright 2018-today: BEES coop (<http://www.bees-coop.be/>)
-# Copyright 2019-today Coop IT Easy SCRL fs
+# Copyright 2019-today Coop IT Easy SC
 #   Houssine Bakkali <houssine@coopiteasy.be>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 

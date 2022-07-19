@@ -18,13 +18,9 @@ class PosSession(models.Model):
         amount_untaxed = 0
         for line in order.lines:
             amount_untaxed += line.price_subtotal
-            taxes = line.tax_ids.filtered(
-                lambda t: t.company_id.id == company_id
-            )
+            taxes = line.tax_ids.filtered(lambda t: t.company_id.id == company_id)
             if fiscal_position:
-                taxes = fiscal_position.map_tax(
-                    taxes, line.product_id, partner
-                )
+                taxes = fiscal_position.map_tax(taxes, line.product_id, partner)
             price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
             taxes = taxes.compute_all(
                 price,
@@ -62,9 +58,7 @@ class PosSession(models.Model):
                 rounding_method = (
                     session.config_id.company_id.tax_calculation_rounding_method
                 )
-                orders = session.order_ids.filtered(
-                    lambda order: order.state == "paid"
-                )
+                orders = session.order_ids.filtered(lambda order: order.state == "paid")
 
                 for order in orders:
                     if rounding_method == "round_globally":

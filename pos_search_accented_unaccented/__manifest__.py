@@ -8,7 +8,7 @@
     "author": "Coop IT Easy SC",
     "license": "AGPL-3",
     "category": "Point of Sale",
-    "website": "www.coopiteasy.be",
+    "website": "https://coopiteasy.be",
     "summary": """
         Allows to search in POS for products with accented characters in name
          using unaccented search query.

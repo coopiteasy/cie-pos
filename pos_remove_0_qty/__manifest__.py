@@ -9,7 +9,7 @@
     "category": "Point of Sale",
     "summary": "Remove pos order line with quantity set to 0",
     "author": "BEES coop SCRLfs, Coop IT Easy SC",
-    "website": "www.coopiteasy.be",
+    "website": "https://coopiteasy.be",
     "license": "AGPL-3",
     "depends": ["point_of_sale"],
     "data": [],

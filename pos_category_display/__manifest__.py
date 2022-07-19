@@ -1,4 +1,4 @@
-# Copyright 2021 Coop IT Easy SCRL fs
+# Copyright 2021 Coop IT Easy SC
 #   Vincent Van Rossem <vincent@coopiteasy.be>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 {
@@ -8,7 +8,7 @@
     "author": "Coop IT Easy SC",
     "license": "AGPL-3",
     "category": "Point Of Sale",
-    "website": "https://www.coopiteasy.be",
+    "website": "https://coopiteasy.be",
     "summary": """
         TODO
     """,
