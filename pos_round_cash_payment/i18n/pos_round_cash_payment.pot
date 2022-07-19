@@ -1,0 +1,41 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* pos_round_cash_payment
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pos_round_cash_payment
+#: model:ir.model.fields,field_description:pos_round_cash_payment.field_pos_config__cash_rounding_activated
+msgid "Activate Cash Rounding"
+msgstr ""
+
+#. module: pos_round_cash_payment
+#: model:ir.model.fields,field_description:pos_round_cash_payment.field_account_bank_statement_import_journal_creation__cash_rounding
+#: model:ir.model.fields,field_description:pos_round_cash_payment.field_account_journal__cash_rounding
+msgid "Cash Rounding Journal"
+msgstr ""
+
+#. module: pos_round_cash_payment
+#: model_terms:ir.ui.view,arch_db:pos_round_cash_payment.view_pos_config_form
+msgid "Cash rounding"
+msgstr ""
+
+#. module: pos_round_cash_payment
+#: model:ir.model,name:pos_round_cash_payment.model_account_journal
+msgid "Journal"
+msgstr ""
+
+#. module: pos_round_cash_payment
+#: model:ir.model,name:pos_round_cash_payment.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr ""
+
