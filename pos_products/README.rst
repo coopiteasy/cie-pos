@@ -41,7 +41,7 @@ Credits
 Authors
 ~~~~~~~
 
-* Robin Keunen <robin@coopiteasy.be>
+* Coop IT Easy SC
 
 Maintainers
 ~~~~~~~~~~~

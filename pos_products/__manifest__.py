@@ -18,9 +18,9 @@
 ##############################################################################
 {
     "name": "POS Products Display Customization",
-    "version": "12.0.1.0.0",
+    "version": "12.0.1.0.1",
     "depends": ["point_of_sale", "beesdoo_product"],
-    "author": "Robin Keunen <robin@coopiteasy.be>",
+    "author": "Coop IT Easy SC",
     "license": "AGPL-3",
     "category": "Point of Sale",
     "website": "https://coopiteasy.be",
