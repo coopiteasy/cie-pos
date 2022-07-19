@@ -5,7 +5,7 @@
 
 {
     "name": "POS order remove zero quantities",
-    "version": "12.0.1.0.0",
+    "version": "12.0.1.0.1",
     "category": "Point of Sale",
     "summary": "Remove pos order line with quantity set to 0",
     "author": "BEES coop SCRLfs, Coop IT Easy SC",
