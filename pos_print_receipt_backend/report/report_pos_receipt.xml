@@ -1,93 +1,109 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
-    <template id="report_assets_common" name="pos_print_receipt_backend pdf assets" inherit_id="web.report_assets_common">
+    <template
+        id="report_assets_common"
+        name="pos_print_receipt_backend pdf assets"
+        inherit_id="web.report_assets_common"
+    >
         <xpath expr="." position="inside">
-            <link href="/pos_print_receipt_backend/static/src/css/receipt.css" rel="stylesheet" id="receipt-stylesheet"/>
+            <link
+                href="/pos_print_receipt_backend/static/src/css/receipt.css"
+                rel="stylesheet"
+                id="receipt-stylesheet"
+            />
         </xpath>
     </template>
 
     <template id="report_pos_receipt_document">
         <t t-call="web.html_container">
             <t t-call="web.basic_layout">
-                <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)" />
                 <div class="receipt">
                     <div class="receipt-container">
                         <div class="sale-ticket">
                             <div class="center-align">
-                                <span t-field="o.date_order"/>
-                                <span t-field="o.pos_reference"/>
-                                <br/>
+                                <span t-field="o.date_order" />
+                                <span t-field="o.pos_reference" />
+                                <br />
                             </div>
-                            <br/>
+                            <br />
                             <t t-if="o.company_id.phone">
                                 <div class="receipt-phone">
                                     Phone:
-                                    <span t-field="o.company_id.phone"/>
+                                    <span t-field="o.company_id.phone" />
                                 </div>
                             </t>
                             <t t-if="o.company_id.vat">
                                 <div class="receipt-vat">
                                     VAT:
-                                    <span t-field="o.company_id.vat"/>
+                                    <span t-field="o.company_id.vat" />
                                 </div>
                             </t>
                             <t t-if="o.company_id.email">
                                 <div class="receipt-email">
                                     Email:
-                                    <span t-field="o.company_id.email"/>
+                                    <span t-field="o.company_id.email" />
                                 </div>
                             </t>
                             <t t-if="o.company_id.website">
                                 <div class="receipt-website">
                                     Website:
-                                    <span t-field="o.company_id.website"/>
+                                    <span t-field="o.company_id.website" />
                                 </div>
                             </t>
                             <t t-if="o.user_id.name">
                                 <div class="receipt-cashier">
                                     Served by:
-                                    <span t-field="o.user_id.name"/>
+                                    <span t-field="o.user_id.name" />
                                 </div>
                             </t>
                             <t t-if="o.partner_id.name">
                                 <div class="receipt-customer">
                                     Customer:
-                                    <span t-field="o.partner_id.name"/>
+                                    <span t-field="o.partner_id.name" />
                                 </div>
                             </t>
-                            <br/>
+                            <br />
                             <table class='receipt-orderlines'>
                                 <colgroup>
-                                    <col width='50%'/>
-                                    <col width='25%'/>
-                                    <col width='25%'/>
+                                    <col width='50%' />
+                                    <col width='25%' />
+                                    <col width='25%' />
                                 </colgroup>
                                 <tr t-foreach="o.lines" t-as="line">
                                     <td>
-                                        <span t-field="line.product_id.name"/>
+                                        <span t-field="line.product_id.name" />
                                         <t t-if="line.discount > 0">
                                             <div class="disc-font">
-                                                With a <span t-field="line.discount"/>% discount
+                                                With a <span
+                                                    t-field="line.discount"
+                                                />% discount
                                             </div>
                                         </t>
                                     </td>
                                     <td class="right-align">
-                                        <span t-field="line.qty"/> <span t-field="line.product_id.uom_id.name"/>
+                                        <span t-field="line.qty" /> <span
+                                            t-field="line.product_id.uom_id.name"
+                                        />
                                     </td>
                                     <td class="right-align">
-                                        <span t-field="line.price_subtotal_incl"
-                                              t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                        <span
+                                            t-field="line.price_subtotal_incl"
+                                            t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"
+                                        />
                                     </td>
                                 </tr>
                             </table>
-                            <br/>
+                            <br />
                             <table class='receipt-total'>
                                 <tr>
                                     <td>Taxes:</td>
                                     <td class="right-align">
-                                        <span t-field="o.amount_tax"
-                                              t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                        <span
+                                            t-field="o.amount_tax"
+                                            t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"
+                                        />
                                     </td>
                                 </tr>
                                 <!-- TODO? taxdetail -->
@@ -95,33 +111,39 @@
                                 <tr class="emph">
                                     <td>Total:</td>
                                     <td class="right-align">
-                                        <span t-esc="o.amount_total"
-                                              t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                        <span
+                                            t-esc="o.amount_total"
+                                            t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"
+                                        />
                                     </td>
                                 </tr>
-                                <br/>
+                                <br />
                                 <table class='receipt-paymentlines'>
                                     <t t-foreach="o.statement_ids" t-as="line">
                                         <t t-if="line.amount > 0">
                                             <tr>
                                                 <td>
-                                                    <span t-field="line.journal_id"/>
+                                                    <span t-field="line.journal_id" />
                                                 </td>
                                                 <td class="right-align">
-                                                    <span t-field="line.amount"
-                                                          t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                                    <span
+                                                        t-field="line.amount"
+                                                        t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"
+                                                    />
                                                 </td>
                                             </tr>
                                         </t>
                                     </t>
                                 </table>
-                                <br/>
+                                <br />
                                 <table class='receipt-change'>
                                     <tr>
                                         <td>Change:</td>
                                         <td class="right-align">
-                                            <span t-field="o.amount_return"
-                                                  t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                            <span
+                                                t-field="o.amount_return"
+                                                t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"
+                                            />
                                         </td>
                                     </tr>
                                 </table>
@@ -135,7 +157,10 @@
 
     <template id="report_pos_receipt">
         <t t-foreach="docs" t-as="o">
-            <t t-call="pos_print_receipt_backend.report_pos_receipt_document" t-lang="o.partner_id.lang"/>
+            <t
+                t-call="pos_print_receipt_backend.report_pos_receipt_document"
+                t-lang="o.partner_id.lang"
+            />
         </t>
     </template>
 
