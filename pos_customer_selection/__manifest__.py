@@ -8,7 +8,7 @@
     "author": "Coop IT Easy SC",
     "license": "AGPL-3",
     "category": "Point of Sale",
-    "website": "https://www.coopiteasy.be",
+    "website": "https://coopiteasy.be",
     "summary": """
         Allows a faster customer research and selection
     """,

@@ -8,7 +8,7 @@
     "author": "Coop IT Easy SC",
     "license": "AGPL-3",
     "category": "Point of Sale",
-    "website": "www.coopiteasy.be",
+    "website": "https://coopiteasy.be",
     "summary": """
         Rounds due amount to nearest 5 cents when adding a cash Payment line.
     """,

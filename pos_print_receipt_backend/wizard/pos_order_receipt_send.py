@@ -35,11 +35,7 @@ class PosReceiptSend(models.TransientModel):
         res = super(PosReceiptSend, self).default_get(fields)
         res_ids = self._context.get("active_ids")
         composer = self.env["mail.compose.message"].create(
-            {
-                "composition_mode": "comment"
-                if len(res_ids) == 1
-                else "mass_mail"
-            }
+            {"composition_mode": "comment" if len(res_ids) == 1 else "mass_mail"}
         )
         res.update({"order_ids": res_ids, "composer_id": composer.id})
         return res
@@ -112,9 +108,7 @@ class PosReceiptSend(models.TransientModel):
                 active_ids_lang = active_records.filtered(
                     lambda r: r.partner_id.lang == lang
                 ).ids
-                self_lang = self.with_context(
-                    active_ids=active_ids_lang, lang=lang
-                )
+                self_lang = self.with_context(active_ids=active_ids_lang, lang=lang)
                 self_lang.onchange_template_id()
                 self_lang._send_email()
         else:
