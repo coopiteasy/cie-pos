@@ -11,7 +11,7 @@
     "author": "Coop IT Easy SC",
     "website": "https://coopiteasy.be",
     "category": "Point of Sale",
-    "version": "12.0.1.0.0",
+    "version": "12.0.1.0.1",
     "depends": ["point_of_sale"],
     "data": ["views/pos_session_view.xml"],
     "demo": [],
