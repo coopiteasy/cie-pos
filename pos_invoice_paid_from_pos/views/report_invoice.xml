@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template id="report_invoice_document" inherit_id="account.report_invoice_document">
+        <!-- Conflicts with account_invoice_pos_already_paid -->
         <xpath expr="//p[@t-if='o.reference']" position="attributes">
             <attribute name="t-if">o.reference and not o.created_from_pos</attribute>
         </xpath>
