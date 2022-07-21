@@ -24,6 +24,7 @@ addon | version | maintainers | summary
 [pos_category_display](pos_category_display/) | 12.0.1.0.1 |  | TODO
 [pos_customer_selection](pos_customer_selection/) | 12.0.1.0.1 |  | Allows a faster customer research and selection
 [pos_default_quantity](pos_default_quantity/) | 12.0.1.0.1 |  | When adding an to order line, this module sets the quantity to the default quantity set on the product unit category.
+[pos_invoice_paid_from_pos](pos_invoice_paid_from_pos/) | 12.0.1.0.0 | [![carmenbianca](https://github.com/carmenbianca.png?size=30px)](https://github.com/carmenbianca) | Mark invoices that were paid from the POS as such, and remove the reference line from the invoice report document for these invoices.
 [pos_order_taxes_fix](pos_order_taxes_fix/) | 12.0.1.0.1 |  | Adds a button to on pos session to fix the taxes of the orders that doesn't match the calculation on backend"
 [pos_print_receipt_backend](pos_print_receipt_backend/) | 12.0.1.1.1 |  | This module helps you to print and/or email POS receipts from the Odoo backend
 [pos_products](pos_products/) | 12.0.1.0.1 |  | Adds information on POS product card. - display weight - producers
