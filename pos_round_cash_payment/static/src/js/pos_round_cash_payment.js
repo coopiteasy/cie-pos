@@ -16,11 +16,13 @@ odoo.define("pos_round_cash_payment.pos_round_cash_payment_line", function (requ
 
     models.Order = models.Order.extend({
         round_5c: function (x) {
-            return round_pr(x * 20) / 20;
+            return round_pr(x, 0.05);
         },
 
         round_5c_remainder: function (x) {
-            return x - this.round_5c(x);
+            // Round again to try to get rid of very small amounts at the end of
+            // the float.
+            return round_pr(x - this.round_5c(x), 0.01);
         },
 
         add_remainder_line: function (cashregister) {
