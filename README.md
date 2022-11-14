@@ -30,7 +30,7 @@ addon | version | maintainers | summary
 [pos_print_receipt_backend](pos_print_receipt_backend/) | 12.0.1.1.1 |  | This module helps you to print and/or email POS receipts from the Odoo backend
 [pos_products](pos_products/) | 12.0.1.0.1 |  | Adds information on POS product card. - display weight - producers
 [pos_remove_0_qty](pos_remove_0_qty/) | 12.0.1.0.1 |  | Remove pos order line with quantity set to 0
-[pos_report_session_summary_xls](pos_report_session_summary_xls/) | 12.0.1.0.0 |  | Download a Z ticket as .xls
+[pos_report_session_summary_xls](pos_report_session_summary_xls/) | 12.0.1.0.1 |  | Download a Z ticket as .xls
 [pos_round_cash_payment](pos_round_cash_payment/) | 12.0.1.0.2 |  | Rounds due amount to nearest 5 cents when adding a cash Payment line.
 [pos_search_accented_unaccented](pos_search_accented_unaccented/) | 12.0.1.0.1 |  | Allows to search in POS for products with accented characters in name using unaccented search query.
 
