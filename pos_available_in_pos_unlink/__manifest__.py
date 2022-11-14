@@ -14,7 +14,7 @@
     "author": "BEES coop - Cellule IT, Coop IT Easy SC",
     "website": "https://coopiteasy.be",
     "category": "Point Of Sale",
-    "version": "12.0.2.0.0",
+    "version": "12.0.2.0.1",
     "depends": ["point_of_sale"],
     "qweb": ["static/src/xml/templates.xml"],
     "installable": True,
