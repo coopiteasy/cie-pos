@@ -21,7 +21,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [pos_account_invoice_access_right](pos_account_invoice_access_right/) | 12.0.1.0.1 |  | Allows read access on `account.invoice` to `point_of_sale.group_pos_user`
-[pos_available_in_pos_unlink](pos_available_in_pos_unlink/) | 12.0.2.0.0 |  | Maintains "Available in POS" (`available_in_pos`) value when unchecking "Can be Sold" (`sale_ok`).
+[pos_available_in_pos_unlink](pos_available_in_pos_unlink/) | 12.0.2.0.1 |  | Maintains "Available in POS" (`available_in_pos`) value when unchecking "Can be Sold" (`sale_ok`).
 [pos_category_display](pos_category_display/) | 12.0.1.0.1 |  | TODO
 [pos_customer_selection](pos_customer_selection/) | 12.0.1.0.1 |  | Allows a faster customer research and selection
 [pos_default_quantity](pos_default_quantity/) | 12.0.1.0.1 |  | When adding an to order line, this module sets the quantity to the default quantity set on the product unit category.
