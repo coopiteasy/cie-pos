@@ -2,7 +2,7 @@
 #   Pierrick Brun <pierrick.brun@akretion.com>
 {
     "name": "PoS Report Session Summary XLS",
-    "version": "12.0.1.0.0",
+    "version": "12.0.1.0.1",
     "summary": "Download a Z ticket as .xls",
     "author": "Coop IT Easy SC, Pierrick Brun, Odoo Community Association (OCA)",
     "website": "https://coopiteasy.be",
