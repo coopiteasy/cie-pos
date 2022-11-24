@@ -15,4 +15,5 @@
     ],
     "data": ["views/pos_views.xml"],
     "installable": True,
+    "development_status": "Beta",
 }
