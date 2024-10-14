@@ -6,7 +6,7 @@
     "name": "Set Default Product Quantity in POS",
     "version": "16.0.1.0.0",
     "author": "Coop IT Easy SC, Odoo Community Association (OCA)",
-    "website": "https://github.com/OCA/pos",
+    "website": "https://github.com/coopiteasy/cie-pos",
     "license": "AGPL-3",
     "category": "Point of Sale",
     "summary": """
