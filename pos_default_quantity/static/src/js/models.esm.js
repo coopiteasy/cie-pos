@@ -6,8 +6,8 @@
 import {Orderline} from "point_of_sale.models";
 import Registries from "point_of_sale.Registries";
 
-const DefaultQtyOrderline = (Orderline) =>
-    class DefaultQtyOrderline extends Orderline {
+const DefaultQtyOrderline = (OriginalOrderline) =>
+    class extends OriginalOrderline {
         constructor(obj, options) {
             super(obj, options);
 
