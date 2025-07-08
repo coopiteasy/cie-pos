@@ -11,6 +11,7 @@ class ProductTemplate(models.Model):
         then assigning the stored value.
         """
         was_available = self.available_in_pos
-        super(ProductTemplate, self)._onchange_sale_ok()
+        result = super(ProductTemplate, self)._onchange_sale_ok()
         if not self.sale_ok:
             self.available_in_pos = was_available
+        return result

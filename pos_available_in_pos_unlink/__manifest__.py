@@ -12,9 +12,9 @@
     "summary": """Maintains "Available in POS" (`available_in_pos`)
     value when unchecking "Can be Sold" (`sale_ok`).""",
     "author": "BEES coop - Cellule IT, Coop IT Easy SC",
-    "website": "https://coopiteasy.be",
+    "website": "https://github.com/coopiteasy/cie-pos",
     "category": "Point Of Sale",
-    "version": "12.0.2.0.2",
+    "version": "16.0.1.0.0",
     "depends": ["point_of_sale"],
     "qweb": ["static/src/xml/templates.xml"],
     "installable": True,
