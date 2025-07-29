@@ -23,7 +23,7 @@
     "author": "Coop IT Easy SC",
     "license": "AGPL-3",
     "category": "Point of Sale",
-    "website": "https://coopiteasy.be",
+    "website": "https://github.com/coopiteasy/cie-pos",
     "summary": """
         Adds information on POS product card.
         - display weight
