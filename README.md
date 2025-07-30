@@ -17,7 +17,11 @@ Odoo modules for Point of Sale.
 
 [//]: # (addons)
 
-This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
+Available addons
+----------------
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[pos_available_in_pos_unlink](pos_available_in_pos_unlink/) | 16.0.1.0.0 |  | Maintains "Available in POS" (`available_in_pos`) value when unchecking "Can be Sold" (`sale_ok`).
 
 [//]: # (end addons)
 
