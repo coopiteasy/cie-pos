@@ -18,8 +18,12 @@
 ##############################################################################
 {
     "name": "POS Products Display Customization",
-    "version": "12.0.1.0.1",
-    "depends": ["point_of_sale", "beesdoo_product"],
+    "version": "16.0.1.0.1",
+    "depends": [
+        "beesdoo_product_label",
+        "point_of_sale",
+        "product_main_supplier",
+    ],
     "author": "Coop IT Easy SC",
     "license": "AGPL-3",
     "category": "Point of Sale",
@@ -29,7 +33,10 @@
         - display weight
         - producers
     """,
-    "data": ["views/assets.xml"],
-    "qweb": ["static/src/xml/pos_products.xml"],
-    "installable": True,
+    "assets": {
+        "point_of_sale.assets": [
+            "pos_products/static/src/xml/Screens/ProductScreen/ProductItem.xml",
+            "pos_products/static/src/scss/pos.scss",
+        ],
+    },
 }

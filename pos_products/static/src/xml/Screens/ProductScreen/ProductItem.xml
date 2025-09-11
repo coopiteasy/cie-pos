@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+SPDX-FileCopyrightText: 2025 Coop IT Easy SC
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+<templates id="template" xml:space="preserve">
+
+    <t
+        t-name="ProductItemWeightInformation"
+        t-inherit="point_of_sale.ProductItem"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//t[@t-esc='props.product.display_name']" position="before">
+            <t t-if="props.product.display_weight > 0">
+                <t
+                    t-out="'[' + props.product.display_weight + props.product.display_unit[1] + ']' + ' '"
+                />
+            </t>
+        </xpath>
+        <xpath expr="//span[@class='price-tag']" position="before">
+            <t t-if="props.product.main_seller_id">
+            <div class="supplier-name">
+                <t t-out="props.product.main_seller_id[1]" />
+            </div>
+            </t>
+        </xpath>
+    </t>
+
+</templates>

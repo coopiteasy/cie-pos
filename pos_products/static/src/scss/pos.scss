@@ -1,0 +1,10 @@
+.pos .product .supplier-name {
+    box-sizing: border-box;
+    line-height: 14px;
+    overflow: hidden;
+    margin: 0 map-get($spacers, 2) 0 map-get($spacers, 2);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    font-style: oblique;
+}
