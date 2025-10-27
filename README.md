@@ -22,6 +22,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [pos_available_in_pos_unlink](pos_available_in_pos_unlink/) | 16.0.1.0.0 |  | Maintains "Available in POS" (`available_in_pos`) value when unchecking "Can be Sold" (`sale_ok`).
+[pos_default_quantity](pos_default_quantity/) | 16.0.1.0.0 |  | When adding an order line in the point of sale, this module sets the quantity to a configured default.
 
 [//]: # (end addons)
 
