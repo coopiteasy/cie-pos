@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+SPDX-FileCopyrightText: 2022 Coop IT Easy SCRLfs
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+<odoo>
+    <template
+        id="report_pos_receipt_document"
+        inherit_id="pos_print_receipt_backend.report_pos_receipt_document"
+    >
+        <xpath expr="table[hasclass('receipt-change')]" position="after">
+            <br />
+            <table class='customer-wallet-balance'>
+                <tr>
+                    <td>Customer Wallet Balance:</td>
+                    <td class="right-align">
+                        <!-- FIXME: this field does not exist -->
+                        <span
+                            t-field="o.customer_wallet_balance"
+                            t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"
+                        />
+                    </td>
+                </tr>
+            </table>
+        </xpath>
+    </template>
+</odoo>
