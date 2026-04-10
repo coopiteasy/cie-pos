@@ -1,0 +1,3 @@
+freezegun
+git+https://github.com/beescoop/obeesdoo@16.0#subdirectory=setup/beesdoo_product_label
+git+https://github.com/beescoop/obeesdoo@16.0#subdirectory=setup/product_main_supplier

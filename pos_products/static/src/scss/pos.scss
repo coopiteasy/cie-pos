@@ -1,0 +1,7 @@
+.pos .product .product-name {
+    // divide top and bottom margin by 2
+    margin-top: map-get($spacers, 1);
+    margin-bottom: map-get($spacers, 1);
+    // allow 4 lines of text instead of 2
+    -webkit-line-clamp: 4;
+}
