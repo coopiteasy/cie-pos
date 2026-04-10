@@ -22,6 +22,10 @@ POS Products Display Customization
 
 |badge1| |badge2| |badge3|
 
+This module adds information on PoS product cards:
+
+- display weight
+- supplier
 
 **Table of contents**
 
@@ -45,6 +49,15 @@ Authors
 ~~~~~~~
 
 * Coop IT Easy SC
+
+Contributors
+~~~~~~~~~~~~
+
+* `Coop IT Easy SC <https://coopiteasy.be>`_:
+
+  * Robin Keunen
+  * Vincent Van Rossem
+  * Simon Hick
 
 Maintainers
 ~~~~~~~~~~~

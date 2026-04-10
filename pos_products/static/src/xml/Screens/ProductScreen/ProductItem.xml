@@ -12,18 +12,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         t-inherit-mode="extension"
         owl="1"
     >
-        <xpath expr="//t[@t-esc='props.product.display_name']" position="before">
+        <xpath expr="//t[@t-esc='props.product.display_name']" position="after">
             <t t-if="props.product.display_weight > 0">
-                <t
-                    t-out="'[' + props.product.display_weight + props.product.display_unit[1] + ']' + ' '"
-                />
+                (<t t-out="formatted_display_weight" />)
             </t>
-        </xpath>
-        <xpath expr="//span[@class='price-tag']" position="before">
             <t t-if="props.product.main_seller_id">
-            <div class="supplier-name">
-                <t t-out="props.product.main_seller_id[1]" />
-            </div>
+                <br /><i><t t-out="props.product.main_seller_id[1]" /></i>
             </t>
         </xpath>
     </t>
