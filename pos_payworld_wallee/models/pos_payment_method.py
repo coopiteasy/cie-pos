@@ -1,12 +1,24 @@
+# SPDX-FileCopyrightText: 2026 Vincent Haulotte
+# SPDX-FileCopyrightText: 2026 Coop IT Easy SC
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 import logging
-from decimal import ROUND_HALF_UP, Decimal
 
 from odoo import _, api, fields, models
 from odoo.exceptions import AccessDenied, UserError, ValidationError
+from odoo.tools import float_round
 
-from ..lib.wallee_minimal import WalleeApiError, WalleeMinimalClient
+from ..lib.wallee_minimal import DEFAULT_HOST, WalleeApiError, WalleeMinimalClient
 
 _logger = logging.getLogger(__name__)
+
+AMOUNT_ROUNDING_PRECISION = 0.01
+DEFAULT_CURRENCY = "EUR"
+DEFAULT_REFERENCE = "Odoo POS"
+MAX_REFERENCE_LENGTH = 100
+MAX_LINE_ID_LENGTH = 200
+MAX_RESPONSE_LENGTH = 5000
 
 
 class PosPaymentMethod(models.Model):
@@ -30,26 +42,25 @@ class PosPaymentMethod(models.Model):
         help="Application user ID used to sign Wallee API requests.",
     )
     wallee_authentication_key = fields.Char(
-        string="Wallee Authentication Key",
         copy=False,
         groups="base.group_erp_manager",
         help="Authentication key for the Wallee application user.",
     )
     wallee_terminal_identifier = fields.Char(
-        string="Wallee Terminal Identifier",
         copy=False,
         help="Unique terminal identifier used by the Wallee Cloud Till Interface.",
     )
     wallee_api_host = fields.Char(
         string="Wallee API Host",
-        default="https://app-wallee.com/api/v2.0",
+        default=DEFAULT_HOST,
         groups="base.group_erp_manager",
         help="Keep default unless Payworld provides another host.",
     )
     wallee_language = fields.Char(
         string="Terminal Language",
         default="fr-BE",
-        help="Optional language sent to Wallee for the terminal transaction, e.g. fr-BE or en-US.",
+        help="Optional language sent to Wallee for the terminal transaction, "
+        "e.g. fr-BE or en-US.",
     )
     wallee_latest_transaction_id = fields.Char(
         copy=False, groups="base.group_erp_manager"
@@ -74,10 +85,13 @@ class PosPaymentMethod(models.Model):
             )
             if existing:
                 raise ValidationError(
-                    _("Terminal %s is already used on payment method %s.")
-                    % (
-                        payment_method.wallee_terminal_identifier,
-                        existing.display_name,
+                    _(
+                        "Terminal %(wallee_terminal_identifier)s is already "
+                        "used on payment method %(payment_method_name)s.",
+                        wallee_terminal_identifier=(
+                            payment_method.wallee_terminal_identifier
+                        ),
+                        payment_method_name=existing.display_name,
                     )
                 )
 
@@ -91,24 +105,24 @@ class PosPaymentMethod(models.Model):
 
     def _wallee_client(self):
         self.ensure_one()
+        sudo_self = self.sudo()
         if (
-            not self.sudo().wallee_application_user_id
-            or not self.sudo().wallee_authentication_key
+            not sudo_self.wallee_application_user_id
+            or not sudo_self.wallee_authentication_key
         ):
             raise UserError(
                 _("Missing Wallee application user ID or authentication key.")
             )
         return WalleeMinimalClient(
-            user_id=int(self.sudo().wallee_application_user_id),
-            authentication_key=self.sudo().wallee_authentication_key,
-            host=self.sudo().wallee_api_host or "https://app-wallee.com/api/v2.0",
-            timeout=25,
+            user_id=sudo_self.wallee_application_user_id,
+            authentication_key=sudo_self.wallee_authentication_key,
+            host=sudo_self.wallee_api_host,
         )
 
     def _wallee_amount(self, amount):
-        return float(
-            Decimal(str(amount)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-        )
+        # FIXME: this should either not be done, or it should use the currency
+        # rounding precision.
+        return float_round(amount, precision_rounding=AMOUNT_ROUNDING_PRECISION)
 
     def _extract_transaction_state(self, transaction):
         value = transaction.get("state") if isinstance(transaction, dict) else None
@@ -144,6 +158,7 @@ class PosPaymentMethod(models.Model):
     def wallee_send_payment_request(self, data):
         """Create a Wallee transaction and send it to the configured terminal."""
         self.ensure_one()
+        sudo_self = self.sudo()
         self._check_pos_user()
         if not data:
             raise UserError(_("Invalid Wallee request."))
@@ -156,14 +171,16 @@ class PosPaymentMethod(models.Model):
         if amount <= 0:
             raise UserError(_("Cannot process a zero or negative amount."))
 
-        space_id = int(self.sudo().wallee_space_id or 0)
-        terminal_identifier = self.sudo().wallee_terminal_identifier
+        space_id = int(sudo_self.wallee_space_id or 0)
+        terminal_identifier = sudo_self.wallee_terminal_identifier
         if not space_id or not terminal_identifier:
             raise UserError(_("Missing Wallee Space ID or terminal identifier."))
 
-        currency = data.get("currency") or "EUR"
-        reference = (data.get("reference") or data.get("order_uid") or "Odoo POS")[:100]
-        language = self.sudo().wallee_language or None
+        currency = data.get("currency") or DEFAULT_CURRENCY
+        reference = (
+            data.get("reference") or data.get("order_uid") or DEFAULT_REFERENCE
+        )[:MAX_REFERENCE_LENGTH]
+        language = sudo_self.wallee_language or None
         client = self._wallee_client()
 
         transaction_create = {
@@ -172,7 +189,9 @@ class PosPaymentMethod(models.Model):
             "lineItems": [
                 {
                     "name": _("Odoo POS payment"),
-                    "uniqueId": (data.get("order_uid") or reference or "pos")[:200],
+                    "uniqueId": (data.get("order_uid") or reference or "pos")[
+                        :MAX_LINE_ID_LENGTH
+                    ],
                     "quantity": 1,
                     "amountIncludingTax": amount,
                     "type": "PRODUCT",
@@ -198,7 +217,7 @@ class PosPaymentMethod(models.Model):
             if not transaction_id:
                 raise UserError(_("Wallee did not return a transaction ID."))
 
-            self.sudo().write({"wallee_latest_transaction_id": str(transaction_id)})
+            sudo_self.write({"wallee_latest_transaction_id": str(transaction_id)})
             result = client.perform_transaction_by_identifier(
                 space_id=space_id,
                 identifier=terminal_identifier,
@@ -207,7 +226,9 @@ class PosPaymentMethod(models.Model):
                 expand=["state", "paymentConnectorConfiguration", "terminal"],
             )
             state = self._extract_transaction_state(result)
-            self.sudo().write({"wallee_latest_response": str(result)[:5000]})
+            sudo_self.write(
+                {"wallee_latest_response": str(result)[:MAX_RESPONSE_LENGTH]}
+            )
 
             return {
                 "success": self._is_success_state(state),

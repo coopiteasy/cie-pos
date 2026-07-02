@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Vincent Haulotte
+# SPDX-FileCopyrightText: 2026 Coop IT Easy SC
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
 """Minimal Wallee REST client embedded for Odoo deployments.
 
 This is not a full copy of the official Wallee Python SDK. It implements only
@@ -16,6 +20,12 @@ import time
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
+
+DEFAULT_HOST = "https://app-wallee.com/api/v2.0"
+DEFAULT_TIMEOUT = 25
+PERFORM_TRANSACTION_TIMEOUT = 90
+USER_AGENT = "Odoo-pos-payworld-wallee/16.0"
+MAX_ERROR_MESSAGE_LENGTH = 500
 
 
 class WalleeApiError(Exception):
@@ -42,12 +52,12 @@ class WalleeMinimalClient(object):
         self,
         user_id,
         authentication_key,
-        host="https://app-wallee.com/api/v2.0",
-        timeout=25,
+        host=DEFAULT_HOST,
+        timeout=DEFAULT_TIMEOUT,
     ):
         self.user_id = int(user_id)
         self.authentication_key = authentication_key
-        self.host = (host or "https://app-wallee.com/api/v2.0").rstrip("/")
+        self.host = (host or DEFAULT_HOST).rstrip("/")
         self.timeout = timeout
 
     def create_transaction(self, space_id, transaction_create, expand=None):
@@ -74,7 +84,7 @@ class WalleeMinimalClient(object):
             % quote(str(identifier), safe=""),
             space_id=space_id,
             query=query,
-            timeout=90,
+            timeout=PERFORM_TRANSACTION_TIMEOUT,
             expected=(200,),
         )
 
@@ -102,7 +112,7 @@ class WalleeMinimalClient(object):
         data = None
         headers = {
             "Accept": "application/json",
-            "User-Agent": "Odoo-pos-payworld-wallee/16.0",
+            "User-Agent": USER_AGENT,
             "x-meta-sdk-version": "embedded-minimal",
             "x-meta-sdk-language": "python",
             "x-meta-sdk-provider": "wallee",
@@ -123,14 +133,17 @@ class WalleeMinimalClient(object):
         except HTTPError as exc:
             raw = exc.read().decode("utf-8", errors="replace")
             raise WalleeApiError(
-                "Wallee HTTP %s: %s" % (exc.code, raw[:500]), status=exc.code, body=raw
-            )
+                "Wallee HTTP %s: %s" % (exc.code, raw[:MAX_ERROR_MESSAGE_LENGTH]),
+                status=exc.code,
+                body=raw,
+            ) from exc
         except URLError as exc:
-            raise WalleeApiError("Unable to reach Wallee: %s" % exc)
+            raise WalleeApiError("Unable to reach Wallee: %s" % exc) from exc
 
         if status not in expected:
             raise WalleeApiError(
-                "Unexpected Wallee HTTP %s: %s" % (status, raw[:500]),
+                "Unexpected Wallee HTTP %s: %s"
+                % (status, raw[:MAX_ERROR_MESSAGE_LENGTH]),
                 status=status,
                 body=raw,
             )

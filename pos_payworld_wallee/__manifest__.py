@@ -1,21 +1,18 @@
+# SPDX-FileCopyrightText: 2026 Vincent Haulotte
+# SPDX-FileCopyrightText: 2026 Coop IT Easy SC
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 {
     "name": "POS Payworld / Wallee Terminal",
-    "version": "16.0.1.1.0",
-    "category": "Sales/Point of Sale",
     "summary": "Integrate Odoo POS with Payworld/Wallee cloud payment terminals",
-    "description": """
-POS Payworld / Wallee Terminal integration for Odoo 16.
-
-Initial scope:
-- One payment terminal per POS payment method.
-- Cloud Till Interface via Wallee Python SDK.
-- Send amount and POS reference to terminal.
-- Wait for terminal result and mark POS payment line done/retry.
-- No refunds, reversals, tips or final balance in this first version.
-
-No server-level Python dependency: minimal Wallee REST client embedded in module.
-""",
-    "depends": ["point_of_sale"],
+    "version": "16.0.1.0.0",
+    "depends": [
+        "point_of_sale",
+    ],
+    "author": "Vincent Haulotte, Coop IT Easy SC",
+    "category": "Sales/Point of Sale",
+    "website": "https://github.com/coopiteasy/cie-pos",
     "data": [
         "views/pos_payment_method_views.xml",
     ],
@@ -24,7 +21,5 @@ No server-level Python dependency: minimal Wallee REST client embedded in module
             "pos_payworld_wallee/static/src/js/**/*",
         ],
     },
-    "installable": True,
-    "application": False,
-    "license": "LGPL-3",
+    "license": "AGPL-3",
 }
