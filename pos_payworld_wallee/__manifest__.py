@@ -6,7 +6,7 @@
 {
     "name": "POS Payworld / Wallee Terminal",
     "summary": "Integrate Odoo POS with Payworld/Wallee cloud payment terminals",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.1",
     "depends": [
         "point_of_sale",
     ],
