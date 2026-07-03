@@ -9,7 +9,7 @@ from odoo import _, api, fields, models
 from odoo.exceptions import AccessDenied, UserError, ValidationError
 from odoo.tools import float_round
 
-from ..lib.wallee_minimal import DEFAULT_HOST, WalleeApiError, WalleeMinimalClient
+from ..lib.wallee_minimal import DEFAULT_API_URL, WalleeApiError, WalleeMinimalClient
 
 _logger = logging.getLogger(__name__)
 
@@ -50,11 +50,11 @@ class PosPaymentMethod(models.Model):
         copy=False,
         help="Unique terminal identifier used by the Wallee Cloud Till Interface.",
     )
-    wallee_api_host = fields.Char(
-        string="Wallee API Host",
-        default=DEFAULT_HOST,
+    wallee_api_url = fields.Char(
+        string="Wallee API URL",
+        default=DEFAULT_API_URL,
         groups="base.group_erp_manager",
-        help="Keep default unless Payworld provides another host.",
+        help="Keep default unless Payworld provides another URL.",
     )
     wallee_language = fields.Char(
         string="Terminal Language",
@@ -116,7 +116,7 @@ class PosPaymentMethod(models.Model):
         return WalleeMinimalClient(
             user_id=sudo_self.wallee_application_user_id,
             authentication_key=sudo_self.wallee_authentication_key,
-            host=sudo_self.wallee_api_host,
+            api_url=sudo_self.wallee_api_url,
         )
 
     def _wallee_amount(self, amount):

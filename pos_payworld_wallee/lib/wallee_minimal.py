@@ -21,7 +21,9 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 
-DEFAULT_HOST = "https://app-wallee.com/api/v2.0"
+DEFAULT_HOST = "https://app-wallee.com"
+API_PATH = "/api/v2.0"
+DEFAULT_API_URL = DEFAULT_HOST + API_PATH
 DEFAULT_TIMEOUT = 25
 PERFORM_TRANSACTION_TIMEOUT = 90
 USER_AGENT = "Odoo-pos-payworld-wallee/16.0"
@@ -46,18 +48,16 @@ def _json_dumps(data):
 
 
 class WalleeMinimalClient(object):
-    API_PATH = "/api/v2.0"
-
     def __init__(
         self,
         user_id,
         authentication_key,
-        host=DEFAULT_HOST,
+        api_url=DEFAULT_API_URL,
         timeout=DEFAULT_TIMEOUT,
     ):
         self.user_id = int(user_id)
         self.authentication_key = authentication_key
-        self.host = (host or DEFAULT_HOST).rstrip("/")
+        self.api_url = (api_url or DEFAULT_API_URL).rstrip("/")
         self.timeout = timeout
 
     def create_transaction(self, space_id, transaction_create, expand=None):
@@ -105,7 +105,7 @@ class WalleeMinimalClient(object):
     ):
         query = query or []
         query_string = urlencode(query, doseq=True)
-        url = self.host + resource_path
+        url = self.api_url + resource_path
         if query_string:
             url += "?" + query_string
 
@@ -156,8 +156,8 @@ class WalleeMinimalClient(object):
 
     def _jwt(self, full_url, method):
         # Official SDK signs requestPath = /api/v2.0 + path/query after host.
-        relative = full_url.replace(self.host, "", 1)
-        request_path = self.API_PATH + relative
+        relative = full_url.replace(self.api_url, "", 1)
+        request_path = API_PATH + relative
         payload = {
             "sub": self.user_id,
             "iat": int(time.time()),

@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                     attrs="{'invisible': [('use_payment_terminal', '!=', 'payworld_wallee')], 'required': [('use_payment_terminal', '=', 'payworld_wallee')]}"
                 />
                 <field
-                    name="wallee_api_host"
+                    name="wallee_api_url"
                     attrs="{'invisible': [('use_payment_terminal', '!=', 'payworld_wallee')]}"
                 />
                     <field
