@@ -7,13 +7,11 @@ import logging
 
 from odoo import _, api, fields, models
 from odoo.exceptions import AccessDenied, UserError, ValidationError
-from odoo.tools import float_round
 
 from ..lib.wallee_minimal import DEFAULT_API_URL, WalleeApiError, WalleeMinimalClient
 
 _logger = logging.getLogger(__name__)
 
-AMOUNT_ROUNDING_PRECISION = 0.01
 DEFAULT_CURRENCY = "EUR"
 DEFAULT_REFERENCE = "Odoo POS"
 MAX_REFERENCE_LENGTH = 100
@@ -119,10 +117,15 @@ class PosPaymentMethod(models.Model):
             api_url=sudo_self.wallee_api_url,
         )
 
-    def _wallee_amount(self, amount):
-        # FIXME: this should either not be done, or it should use the currency
-        # rounding precision.
-        return float_round(amount, precision_rounding=AMOUNT_ROUNDING_PRECISION)
+    def _wallee_amount(self, amount, currency):
+        # the amount sent by the pos is sometimes not exactly rounded, like
+        # 8.29 being transmitted as 8.290000000000001, and in this case wallee
+        # returns a 422 error saying "The number 8.290000000000001 needs to
+        # have at most 11 integer digits and at most 8 decimal digits.".
+        # odoo.tools.float_round() rounds in the same way as the pos thus
+        # leaving this value unchanged. python built-in round() handles this
+        # correctly, probably because it uses a higher precision.
+        return round(amount, currency.decimal_places)
 
     def _extract_transaction_state(self, transaction):
         value = transaction.get("state") if isinstance(transaction, dict) else None
@@ -167,7 +170,11 @@ class PosPaymentMethod(models.Model):
                 _("This payment method is not configured for Payworld/Wallee.")
             )
 
-        amount = self._wallee_amount(data.get("amount"))
+        currency = self.env["res.currency"].browse(data.get("currency_id"))
+        if not currency:
+            raise UserError(_("Missing or invalid currency_id."))
+
+        amount = self._wallee_amount(data.get("amount"), currency)
         if amount <= 0:
             raise UserError(_("Cannot process a zero or negative amount."))
 
@@ -176,7 +183,6 @@ class PosPaymentMethod(models.Model):
         if not space_id or not terminal_identifier:
             raise UserError(_("Missing Wallee Space ID or terminal identifier."))
 
-        currency = data.get("currency") or DEFAULT_CURRENCY
         reference = (
             data.get("reference") or data.get("order_uid") or DEFAULT_REFERENCE
         )[:MAX_REFERENCE_LENGTH]
@@ -184,7 +190,7 @@ class PosPaymentMethod(models.Model):
         client = self._wallee_client()
 
         transaction_create = {
-            "currency": currency,
+            "currency": currency.name,
             "merchantReference": reference,
             "lineItems": [
                 {

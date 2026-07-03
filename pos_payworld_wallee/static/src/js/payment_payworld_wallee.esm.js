@@ -64,7 +64,7 @@ const PaymentPayworldWallee = PaymentInterface.extend({
 
         const data = {
             amount: line.amount,
-            currency: this.pos.currency.name,
+            currency_id: this.pos.currency.id,
             reference: order.name || order.uid,
             order_uid: order.uid,
             pos_config_id: this.pos.config.id,
