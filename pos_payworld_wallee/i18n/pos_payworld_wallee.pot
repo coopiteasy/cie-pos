@@ -1,0 +1,202 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* pos_payworld_wallee
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pos_payworld_wallee
+#: model:ir.model.fields,help:pos_payworld_wallee.field_pos_payment_method__wallee_application_user_id
+msgid "Application user ID used to sign Wallee API requests."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#: model:ir.model.fields,help:pos_payworld_wallee.field_pos_payment_method__wallee_authentication_key
+msgid "Authentication key for the Wallee application user."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#. odoo-python
+#: code:addons/pos_payworld_wallee/models/pos_payment_method.py:0
+#, python-format
+msgid "Cancel manually on the terminal if needed."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#. odoo-javascript
+#. odoo-python
+#: code:addons/pos_payworld_wallee/models/pos_payment_method.py:0
+#: code:addons/pos_payworld_wallee/static/src/js/payment_payworld_wallee.esm.js:0
+#, python-format
+msgid "Cannot process a zero or negative amount."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#. odoo-javascript
+#: code:addons/pos_payworld_wallee/static/src/js/payment_payworld_wallee.esm.js:0
+#, python-format
+msgid ""
+"Could not connect to Odoo or Payworld/Wallee. Please check the connection "
+"and try again."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#. odoo-javascript
+#: code:addons/pos_payworld_wallee/static/src/js/payment_payworld_wallee.esm.js:0
+#, python-format
+msgid ""
+"If the payment is already displayed on the terminal, cancel it manually on "
+"the terminal."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#. odoo-python
+#: code:addons/pos_payworld_wallee/models/pos_payment_method.py:0
+#, python-format
+msgid "Invalid Wallee request."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#: model:ir.model.fields,help:pos_payworld_wallee.field_pos_payment_method__wallee_api_url
+msgid "Keep default unless Payworld provides another URL."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#. odoo-javascript
+#: code:addons/pos_payworld_wallee/static/src/js/payment_payworld_wallee.esm.js:0
+#, python-format
+msgid "Message from Payworld/Wallee: %s"
+msgstr ""
+
+#. module: pos_payworld_wallee
+#. odoo-python
+#: code:addons/pos_payworld_wallee/models/pos_payment_method.py:0
+#, python-format
+msgid "Missing Wallee Space ID or terminal identifier."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#. odoo-python
+#: code:addons/pos_payworld_wallee/models/pos_payment_method.py:0
+#, python-format
+msgid "Missing Wallee application user ID or authentication key."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#. odoo-python
+#: code:addons/pos_payworld_wallee/models/pos_payment_method.py:0
+#, python-format
+msgid "Odoo POS payment"
+msgstr ""
+
+#. module: pos_payworld_wallee
+#: model:ir.model.fields,help:pos_payworld_wallee.field_pos_payment_method__wallee_language
+msgid ""
+"Optional language sent to Wallee for the terminal transaction, e.g. fr-BE or"
+" en-US."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#. odoo-javascript
+#: code:addons/pos_payworld_wallee/static/src/js/payment_payworld_wallee.esm.js:0
+#, python-format
+msgid "Payment was not successful."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#. odoo-javascript
+#: code:addons/pos_payworld_wallee/static/src/js/payment_payworld_wallee.esm.js:0
+#, python-format
+msgid "Payworld/Wallee Error"
+msgstr ""
+
+#. module: pos_payworld_wallee
+#: model:ir.model,name:pos_payworld_wallee.model_pos_payment_method
+msgid "Point of Sale Payment Methods"
+msgstr ""
+
+#. module: pos_payworld_wallee
+#: model:ir.model,name:pos_payworld_wallee.model_pos_session
+msgid "Point of Sale Session"
+msgstr ""
+
+#. module: pos_payworld_wallee
+#: model:ir.model.fields,help:pos_payworld_wallee.field_pos_payment_method__wallee_space_id
+msgid "Space ID provided by Payworld/Wallee."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#. odoo-python
+#: code:addons/pos_payworld_wallee/models/pos_payment_method.py:0
+#, python-format
+msgid ""
+"Terminal %(wallee_terminal_identifier)s is already used on payment method "
+"%(payment_method_name)s."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#: model:ir.model.fields,field_description:pos_payworld_wallee.field_pos_payment_method__wallee_language
+msgid "Terminal Language"
+msgstr ""
+
+#. module: pos_payworld_wallee
+#. odoo-python
+#: code:addons/pos_payworld_wallee/models/pos_payment_method.py:0
+#, python-format
+msgid "This payment method is not configured for Payworld/Wallee."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#: model:ir.model.fields,help:pos_payworld_wallee.field_pos_payment_method__wallee_terminal_identifier
+msgid "Unique terminal identifier used by the Wallee Cloud Till Interface."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#: model:ir.model.fields,field_description:pos_payworld_wallee.field_pos_payment_method__wallee_api_url
+msgid "Wallee API URL"
+msgstr ""
+
+#. module: pos_payworld_wallee
+#: model:ir.model.fields,field_description:pos_payworld_wallee.field_pos_payment_method__wallee_application_user_id
+msgid "Wallee Application User ID"
+msgstr ""
+
+#. module: pos_payworld_wallee
+#: model:ir.model.fields,field_description:pos_payworld_wallee.field_pos_payment_method__wallee_authentication_key
+msgid "Wallee Authentication Key"
+msgstr ""
+
+#. module: pos_payworld_wallee
+#: model:ir.model.fields,field_description:pos_payworld_wallee.field_pos_payment_method__wallee_latest_response
+msgid "Wallee Latest Response"
+msgstr ""
+
+#. module: pos_payworld_wallee
+#: model:ir.model.fields,field_description:pos_payworld_wallee.field_pos_payment_method__wallee_latest_transaction_id
+msgid "Wallee Latest Transaction"
+msgstr ""
+
+#. module: pos_payworld_wallee
+#: model:ir.model.fields,field_description:pos_payworld_wallee.field_pos_payment_method__wallee_space_id
+msgid "Wallee Space ID"
+msgstr ""
+
+#. module: pos_payworld_wallee
+#: model:ir.model.fields,field_description:pos_payworld_wallee.field_pos_payment_method__wallee_terminal_identifier
+msgid "Wallee Terminal Identifier"
+msgstr ""
+
+#. module: pos_payworld_wallee
+#. odoo-python
+#: code:addons/pos_payworld_wallee/models/pos_payment_method.py:0
+#, python-format
+msgid "Wallee did not return a transaction ID."
+msgstr ""
