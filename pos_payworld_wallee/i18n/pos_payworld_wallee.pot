@@ -94,6 +94,13 @@ msgstr ""
 #. odoo-python
 #: code:addons/pos_payworld_wallee/models/pos_payment_method.py:0
 #, python-format
+msgid "Missing or invalid currency_id."
+msgstr ""
+
+#. module: pos_payworld_wallee
+#. odoo-python
+#: code:addons/pos_payworld_wallee/models/pos_payment_method.py:0
+#, python-format
 msgid "Odoo POS payment"
 msgstr ""
 
