@@ -124,11 +124,6 @@ msgid "Point of Sale Payment Methods"
 msgstr ""
 
 #. module: pos_payworld_wallee
-#: model:ir.model,name:pos_payworld_wallee.model_pos_session
-msgid "Point of Sale Session"
-msgstr ""
-
-#. module: pos_payworld_wallee
 #: model:ir.model.fields,help:pos_payworld_wallee.field_pos_payment_method__wallee_space_id
 msgid "Space ID provided by Payworld/Wallee."
 msgstr ""
