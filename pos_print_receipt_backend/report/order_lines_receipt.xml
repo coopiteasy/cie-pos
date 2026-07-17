@@ -46,14 +46,21 @@
                 <t t-if="line.discount != 0">
                     <div class="pos-receipt-left-padding">
                         Discount:
-                        <t t-esc="line.discount" />%
+                        <!--
+                            the g formatting gives the same result as
+                            outputting the raw value in js, which is how it's
+                            done in the pos.
+                        -->
+                        <t t-esc="'{0:g}'.format(line.discount)" />%
                     </div>
                 </t>
                 <div class="pos-receipt-qty-per-price pos-receipt-left-padding">
-                    <t
-                        t-esc="line.qty"
-                        t-options="{'widget': 'float', 'decimal_precision': 'Product Unit of Measure'}"
-                    />
+                    <!--
+                        no need to round as is done in the pos because qty is
+                        stored already rounded. same remark about the g
+                        formatting as above.
+                    -->
+                    <t t-esc="'{0:g}'.format(line.qty)" />
                     <t
                         t-if="line.product_uom_id != line.env.ref('uom.product_uom_unit')"
                         t-esc="line.product_uom_id.name"
