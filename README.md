@@ -24,7 +24,7 @@ addon | version | maintainers | summary
 [pos_available_in_pos_unlink](pos_available_in_pos_unlink/) | 16.0.1.0.0 |  | Maintains "Available in POS" (`available_in_pos`) value when unchecking "Can be Sold" (`sale_ok`).
 [pos_default_quantity](pos_default_quantity/) | 16.0.1.0.0 |  | When adding an order line in the point of sale, this module sets the quantity to a configured default.
 [pos_payworld_wallee](pos_payworld_wallee/) | 16.0.1.0.2 |  | Integrate Odoo POS with Payworld/Wallee cloud payment terminals
-[pos_print_receipt_backend](pos_print_receipt_backend/) | 16.0.1.0.0 |  | This module helps you to print and/or email POS receipts from the Odoo backend
+[pos_print_receipt_backend](pos_print_receipt_backend/) | 16.0.1.0.1 |  | This module helps you to print and/or email POS receipts from the Odoo backend
 [pos_products](pos_products/) | 16.0.1.0.0 |  | Add display weight and supplier information on PoS product cards
 
 [//]: # (end addons)
