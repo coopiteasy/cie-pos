@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+pos_print_receipt_backend.access_pos_order_receipt_send,access_pos_order_receipt_send,pos_print_receipt_backend.model_pos_order_receipt_send,base.group_user,1,1,1,1

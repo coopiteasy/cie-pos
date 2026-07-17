@@ -1,0 +1,31 @@
+/* Necessary changes to the css to get a result close to the POS receipt */
+
+/* wkhtmltopdf messes up the layout if the line-height is smaller */
+body {
+    line-height: 1.5;
+}
+
+.pos-receipt {
+    font-family: "Lato", "Lucida Grande", Helvetica, Verdana, Arial;
+    color: #4a4f59;
+    font-size: 14px;
+}
+
+.pos-receipt-contact {
+    font-size: 10.5px;
+    line-height: 1;
+}
+
+.pos-receipt-amount {
+    font-size: 125%;
+}
+
+.pos-receipt-qrcode {
+    width: 128px;
+    height: 128px;
+    display: block;
+}
+
+.responsive-price {
+    display: block;
+}

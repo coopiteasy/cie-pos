@@ -1,0 +1,568 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* pos_print_receipt_backend
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pos_print_receipt_backend
+#: model:mail.template,subject:pos_print_receipt_backend.email_template_pos_order_receipt
+msgid "${object.company_id.name} POS Order (Receipt Ref ${object.pos_reference or 'n/a'})"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.report_pos_receipt_document
+msgid "% discount"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:mail.template,body_html:pos_print_receipt_backend.email_template_pos_order_receipt
+msgid "<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"        Dear ${object.partner_id.name}\n"
+"        % if object.partner_id.parent_id:\n"
+"            (${object.partner_id.parent_id.name})\n"
+"        % endif\n"
+"        <br/><br/>\n"
+"        Here is your\n"
+"        % if object.pos_reference:\n"
+"            receipt <strong>${object.pos_reference}</strong>\n"
+"        % else:\n"
+"            receipt\n"
+"        %endif\n"
+"        % if object.name:\n"
+"            (with order reference: ${object.name})\n"
+"        % endif\n"
+"        amounting in <strong>${format_amount(object.amount_total, object.company_id.currency_id)}</strong>\n"
+"        from ${object.company_id.name}.\n"
+"        % if object.state=='paid':\n"
+"            This receipt is already paid.\n"
+"        % else:\n"
+"            Please remit payment at your earliest convenience.\n"
+"        % endif\n"
+"        <br/><br/>\n"
+"        Do not hesitate to contact us if you have any question.\n"
+"    </p>\n"
+"</div>\n"
+"            "
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.pos_order_send_wizard_form
+msgid "<span attrs=\"{'invisible': [('composition_mode', '!=', 'mass_mail')]}\">\n"
+"                                        <strong>Email mass mailing</strong> on\n"
+"                                        <span>the selected records</span>\n"
+"                                    </span>\n"
+"                                    <span>Followers of the document and</span>"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__active_domain
+msgid "Active domain"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__add_sign
+msgid "Add Sign"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.pos_order_send_wizard_form
+msgid "Add contacts to notify..."
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__partner_ids
+msgid "Additional Contacts"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__no_auto_thread
+msgid "Answers do not go in the original document discussion thread. This has an impact on the generated message-id."
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.pos_order_send_wizard_form
+msgid "Attach a file"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__attachment_ids
+msgid "Attachments"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__attachment_ids
+msgid "Attachments are linked to a document through model / res_id and to the message through this field."
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__author_id
+msgid "Author"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__author_id
+msgid "Author of the message. If not set, email_from may hold an email address that did not match any partner."
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__author_avatar
+msgid "Author's avatar"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.pos_order_send_wizard_form
+msgid "Cancel"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.report_pos_receipt_document
+msgid "Change:"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__channel_ids
+msgid "Channels"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__child_ids
+msgid "Child Messages"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__composer_id
+msgid "Composer"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__composition_mode
+msgid "Composition mode"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__body
+msgid "Contents"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__starred
+msgid "Current user has a starred notification linked to this message"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.report_pos_receipt_document
+msgid "Customer:"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__date
+msgid "Date"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__auto_delete
+msgid "Delete Emails"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__auto_delete_message
+msgid "Delete Message Copy"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__auto_delete
+msgid "Delete sent emails (mass mailing only)"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__auto_delete_message
+msgid "Do not keep a copy of the email in the document communication history (mass mailing only)"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__is_email
+msgid "Email"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__email_from
+msgid "Email address of the sender. This field is set when no matching partner is found and replaces the author_id field in the chatter."
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.report_pos_receipt_document
+msgid "Email:"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__starred_partner_ids
+msgid "Favorited By"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__email_from
+msgid "From"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__has_error
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__has_error
+msgid "Has error"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__id
+msgid "ID"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__parent_id
+msgid "Initial thread message."
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order__receipt_sent
+msgid "It indicates that the receipt has been sent."
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__layout
+msgid "Layout"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__is_log
+msgid "Log an Internal Note"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__mail_activity_type_id
+msgid "Mail Activity Type"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__record_name
+msgid "Message Record Name"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__message_type
+msgid "Message type: email for email message, notification for system message, comment for other messages such as user replies"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__message_id
+msgid "Message unique identifier"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__message_id
+msgid "Message-Id"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__moderator_id
+msgid "Moderated By"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__moderation_status
+msgid "Moderation Status"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__record_name
+msgid "Name get of the related document."
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__needaction
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__needaction
+msgid "Need Action"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__need_moderation
+msgid "Need moderation"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__no_auto_thread
+msgid "No threading for answers"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__notification_ids
+msgid "Notifications"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__notify
+msgid "Notify followers"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__notify
+msgid "Notify followers of the document (mass post only)"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__order_ids
+msgid "Orders"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__mail_server_id
+msgid "Outgoing mail server"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model,name:pos_print_receipt_backend.model_pos_order_receipt_send
+msgid "POS Receipt Send"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.pos_order_send_wizard_form
+msgid "POS Receipt Send & Print"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__parent_id
+msgid "Parent Message"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__needaction_partner_ids
+msgid "Partners with Need Action"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.report_pos_receipt_document
+msgid "Phone:"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model,name:pos_print_receipt_backend.model_pos_order
+msgid "Point of Sale Orders"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.pos_order_send_wizard_form
+msgid "Preview as a PDF"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__is_print
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.pos_order_send_wizard_form
+msgid "Print"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.actions.report,name:pos_print_receipt_backend.action_report_receipt
+msgid "Print Receipt"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order__receipt_sent
+msgid "Receipt sent by backend interface"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:mail.template,report_name:pos_print_receipt_backend.email_template_pos_order_receipt
+msgid "Receipt_${(object.pos_reference or '').replace('-','_')}${object.state == 'draft' and '_draft' or ''}"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.pos_order_send_wizard_form
+msgid "Recipients"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__res_id
+msgid "Related Document ID"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__model
+msgid "Related Document Model"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__reply_to
+msgid "Reply email address. Setting the reply_to bypasses the automatic thread creation."
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__reply_to
+msgid "Reply-To"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.pos_order_send_wizard_form
+msgid "Save as a new template"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.pos_order_send_wizard_form
+msgid "Save as new template"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.actions.act_window,name:pos_print_receipt_backend.receipt_send
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.pos_order_send_wizard_form
+msgid "Send"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.pos_order_send_wizard_form
+msgid "Send & Print"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.view_pos_order_form
+msgid "Send & Print Receipt"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: code:addons/pos_print_receipt_backend/models/pos_order.py:54
+#: code:addons/pos_print_receipt_backend/wizard/pos_order_receipt_send.py:126
+#, python-format
+msgid "Send Receipt"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.report_pos_receipt_document
+msgid "Served by:"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__author_avatar
+msgid "Small-sized image of this contact. It is automatically resized as a 64x64px image, with aspect ratio preserved. Use this field anywhere a small image is required."
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__starred
+msgid "Starred"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__subject
+msgid "Subject"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.pos_order_send_wizard_form
+msgid "Subject..."
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__subtype_id
+msgid "Subtype"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.report_pos_receipt_document
+msgid "Taxes:"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: code:addons/pos_print_receipt_backend/wizard/pos_order_receipt_send.py:69
+#, python-format
+msgid "The following receipt(s) will not be sent by email, because the customers don't have email address."
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.report_pos_receipt_document
+msgid "Total:"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__tracking_value_ids
+msgid "Tracked values are stored in a separate model. This field allow to reconstruct the tracking and to generate statistics on the model."
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__tracking_value_ids
+msgid "Tracking values"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__message_type
+msgid "Type"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__use_active_domain
+msgid "Use active domain"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__template_id
+msgid "Use template"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.report_pos_receipt_document
+msgid "VAT:"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.report_pos_receipt_document
+msgid "Website:"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,help:pos_print_receipt_backend.field_pos_order_receipt_send__is_log
+msgid "Whether the message is an internal note (comment mode only)"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.report_pos_receipt_document
+msgid "With a"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model:ir.model.fields,field_description:pos_print_receipt_backend.field_pos_order_receipt_send__receipt_without_email
+msgid "receipt(s) that will not be sent"
+msgstr ""
+

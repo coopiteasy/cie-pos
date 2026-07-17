@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!-- Main receipt template - mirrors frontend OrderReceipt -->
+    <template id="report_pos_receipt_document">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)" />
+                <div class="pos-receipt">
+                    <t t-if="o.company_id.logo">
+                        <img
+                            class="pos-receipt-logo"
+                            t-att-src="image_data_uri(o.company_id.logo)"
+                            alt="Logo"
+                        />
+                        <br />
+                    </t>
+                    <t t-if="not o.company_id.logo">
+                        <h2 class="pos-receipt-center-align">
+                            <t t-esc="o.company_id.name" />
+                        </h2>
+                        <br />
+                    </t>
+
+                    <div class="pos-receipt-contact">
+                        <!-- Showing only the company name rather than the full  -->
+                        <!-- contact_address to be consistent with the POS receipt -->
+                        <t t-if="o.company_id.partner_id.name">
+                            <div><t t-esc="o.company_id.name" /></div>
+                        </t>
+                        <t t-if="o.company_id.phone">
+                            <div>Tel:<t t-esc="o.company_id.phone" /></div>
+                        </t>
+                        <t t-if="o.company_id.vat">
+                            <div><t t-esc="o.company_id.vat_label" />:<t
+                                    t-esc="o.company_id.vat"
+                                /></div>
+                        </t>
+                        <t t-if="o.company_id.email">
+                            <div><t t-esc="o.company_id.email" /></div>
+                        </t>
+                        <t t-if="o.company_id.website">
+                            <div><t t-esc="o.company_id.website" /></div>
+                        </t>
+                        <!-- Receipt header from POS config -->
+                        <t t-if="o.config_id.receipt_header">
+                            <div style="white-space:pre-line">
+                                <t t-esc="o.config_id.receipt_header" />
+                            </div>
+                        </t>
+                        <!-- Cashier information -->
+                        <t t-if="o.user_id.name">
+                            <div class="cashier">
+                                <div>--------------------------------</div>
+                                <div>Served by <t t-esc="o.user_id.name" /></div>
+                            </div>
+                        </t>
+                    </div>
+                    <br /><br />
+
+                    <!-- Orderlines -->
+
+                    <div class="orderlines">
+                        <t t-call="pos_print_receipt_backend.OrderLinesReceipt" />
+                    </div>
+
+                    <!-- Subtotal -->
+
+                    <t
+                        t-set="isTaxIncluded"
+                        t-value="o.config_id.iface_tax_included == 'total'"
+                    />
+                    <t t-if="not isTaxIncluded">
+                        <div class="pos-receipt-right-align">--------</div>
+                        <br />
+                        <div>Subtotal
+                            <span
+                                t-esc="o.amount_total - o.amount_tax"
+                                t-options="{'widget': 'monetary', 'display_currency': o.pricelist_id.currency_id}"
+                                class="pos-receipt-right-align"
+                            />
+                        </div>
+                        <t t-if="o.amount_tax > 0">
+                            <t
+                                t-foreach="o.get_tax_details_grouped()"
+                                t-as="tax_detail"
+                            >
+                                <div class="responsive-price">
+                                    <t t-esc="tax_detail['name']" />
+                                    <span
+                                        t-esc="tax_detail['tax_amount']"
+                                        t-options="{'widget': 'float', 'precision': 2}"
+                                        class="pos-receipt-right-align"
+                                    />
+                                </div>
+                            </t>
+                        </t>
+                    </t>
+
+                    <!-- Total -->
+
+                    <div class="pos-receipt-right-align">--------</div>
+                    <br />
+                    <div class="pos-receipt-amount">
+                        TOTAL
+                        <span
+                            t-esc="o.amount_total"
+                            t-options="{'widget': 'monetary', 'display_currency': o.pricelist_id.currency_id}"
+                            class="pos-receipt-right-align"
+                        />
+                    </div>
+                    <t t-set="rounding_applied" t-value="o.get_rounding_applied()" />
+                    <t t-if="abs(rounding_applied) > 0.001">
+                        <div class="pos-receipt-amount">
+                            Rounding
+                            <span
+                                t-esc="rounding_applied"
+                                t-options="{'widget': 'monetary', 'display_currency': o.pricelist_id.currency_id}"
+                                class="pos-receipt-right-align"
+                            />
+                        </div>
+                        <div class="pos-receipt-amount">
+                            To Pay
+                            <span
+                                t-esc="o.amount_total"
+                                t-options="{'widget': 'monetary', 'display_currency': o.pricelist_id.currency_id}"
+                                class="pos-receipt-right-align"
+                            />
+                        </div>
+                    </t>
+                    <br /><br />
+
+                    <!-- Payment Lines -->
+
+                    <!-- Filters out the change since it should only appear later -->
+                    <t
+                        t-foreach="o.payment_ids.filtered(lambda p: not (p.payment_method_id.is_cash_count and p.amount &lt; 0))"
+                        t-as="payment"
+                    >
+                        <div class="responsive-price">
+                            <t t-esc="payment.payment_method_id.name" />
+                            <span
+                                t-esc="payment.amount"
+                                t-options="{'widget': 'float', 'precision': 2}"
+                                class="pos-receipt-right-align"
+                            />
+                        </div>
+                    </t>
+                    <br />
+
+                    <!-- Change -->
+                    <div class="pos-receipt-amount receipt-change">
+                        CHANGE
+                        <span
+                            t-esc="o.amount_return"
+                            t-options="{'widget': 'monetary', 'display_currency': o.pricelist_id.currency_id}"
+                            class="pos-receipt-right-align"
+                        />
+                    </div>
+                    <br />
+
+                    <!-- Extra Payment Info -->
+
+                    <t t-set="total_discount" t-value="o.get_total_discount()" />
+                    <t t-if="total_discount">
+                        <div>
+                            Discounts
+                            <span
+                                t-esc="total_discount"
+                                t-options="{'widget': 'monetary', 'display_currency': o.pricelist_id.currency_id}"
+                                class="pos-receipt-right-align"
+                            />
+                        </div>
+                    </t>
+
+                    <t t-if="isTaxIncluded">
+                        <t t-set="tax_details" t-value="o.get_tax_details_grouped()" />
+                        <t t-foreach="tax_details" t-as="tax_detail">
+                            <div class="responsive-price">
+                                <t t-esc="tax_detail['name']" />
+                                <span
+                                    t-esc="tax_detail['tax_amount']"
+                                    t-options="{'widget': 'float', 'precision': 2}"
+                                    class="pos-receipt-right-align"
+                                />
+                            </div>
+                        </t>
+                        <div class="responsive-price">
+                            Total Taxes
+                            <span
+                                t-esc="o.amount_tax"
+                                t-options="{'widget': 'monetary', 'display_currency': o.pricelist_id.currency_id}"
+                                class="pos-receipt-right-align"
+                            />
+                        </div>
+                    </t>
+
+                    <div class="before-footer" />
+
+                    <!-- Removed qr code since it doesn't show up on POS receipt -->
+                    <!-- except at checkout -->
+
+                    <!-- Footer -->
+                    <div
+                        t-if="o.config_id.receipt_footer"
+                        class="pos-receipt-center-align"
+                        style="white-space:pre-line"
+                    >
+                        <br />
+                        <t t-esc="o.config_id.receipt_footer" />
+                        <br />
+                        <br />
+                    </div>
+
+                    <!-- Removed the payment terminal html since it's not stored -->
+
+                    <br />
+                    <!-- Order Reference and Date -->
+                    <div class="pos-receipt-order-data">
+                        <div><t t-esc="o.pos_reference" /></div>
+                        <div>
+                            <t
+                                t-esc="o.date_order"
+                                t-options="{'widget': 'datetime', 'format': 'yyyy-MM-dd HH:mm:ssxxx'}"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_pos_receipt">
+        <t t-foreach="docs" t-as="o">
+            <t
+                t-call="pos_print_receipt_backend.report_pos_receipt_document"
+                t-lang="o.partner_id.lang"
+            />
+        </t>
+    </template>
+
+</odoo>
