@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!-- Mirrors frontend OrderLinesReceipt -->
+    <template id="OrderLinesReceipt">
+        <t t-foreach="o.lines" t-as="line">
+            <t
+                t-set="product_name_wrapped"
+                t-value="line.generate_product_name_wrapped()"
+            />
+            <t t-if="line.is_simple()">
+                <!-- Simple line: product name with price on same line -->
+                <div class="responsive-price">
+                    <span t-esc="product_name_wrapped[0]" />
+                    <span
+                        t-esc="line.price_subtotal_incl"
+                        t-options="{'widget': 'float', 'precision': 2}"
+                        class="price_display pos-receipt-right-align"
+                    />
+                </div>
+                <t t-call="pos_print_receipt_backend.WrappedProductNameLines">
+                    <t
+                        t-set="product_name_wrapped"
+                        t-value="product_name_wrapped[1:]"
+                    />
+                </t>
+            </t>
+            <t t-else="">
+                <t t-call="pos_print_receipt_backend.WrappedProductNameLines" />
+                <t t-if="line.has_visible_discount()">
+                    <div class="pos-receipt-left-padding">
+                        <t t-esc="line.product_id.lst_price" />
+                        ->
+                        <t t-esc="line.price_subtotal_incl / line.qty" />
+                    </div>
+                </t>
+                <t t-elif="line.discount != 0">
+                    <div class="pos-receipt-left-padding">
+                        <t
+                            t-esc="line.get_price_with_tax_before_discount()"
+                            t-options="{'widget': 'float', 'precision': 2}"
+                            class="price_display pos-receipt-price"
+                        />
+                    </div>
+                </t>
+                <t t-if="line.discount != 0">
+                    <div class="pos-receipt-left-padding">
+                        Discount:
+                        <t t-esc="line.discount" />%
+                    </div>
+                </t>
+                <div class="pos-receipt-qty-per-price pos-receipt-left-padding">
+                    <t
+                        t-esc="line.qty"
+                        t-options="{'widget': 'float', 'decimal_precision': 'Product Unit of Measure'}"
+                    />
+                    <t
+                        t-if="line.product_uom_id != line.env.ref('uom.product_uom_unit')"
+                        t-esc="line.product_uom_id.name"
+                    />
+                    x
+                    <t
+                        t-esc="line.price_subtotal_incl / line.qty"
+                        t-options="{'widget': 'monetary', 'display_currency': o.pricelist_id.currency_id}"
+                    />
+                    <span class="price_display pos-receipt-right-align">
+                        <t
+                            t-esc="line.price_subtotal_incl"
+                            t-options="{'widget': 'float', 'precision': 2}"
+                        />
+                    </span>
+                </div>
+            </t>
+            <t t-if="line.customer_note">
+                <div class="pos-receipt-left-padding pos-receipt-customer-note">
+                    <t t-esc="line.customer_note" />
+                </div>
+            </t>
+            <t t-if="line.pack_lot_ids">
+                <div class="pos-receipt-left-padding">
+                    <ul>
+                        <t t-foreach="line.pack_lot_ids" t-as="lot">
+                            <li>
+                                <t t-if="line.product_id.tracking == 'lot'">
+                                    Lot Number <t t-esc="lot.lot_name" />
+                                </t>
+                                <t t-else="">
+                                    SN <t t-esc="lot.lot_name" />
+                                </t>
+                            </li>
+                        </t>
+                    </ul>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

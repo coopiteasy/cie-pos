@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <report
-        string="Print Receipt"
-        id="action_report_receipt"
-        model="pos.order"
-        report_type="qweb-pdf"
-        name="pos_print_receipt_backend.report_pos_receipt"
-        file="pos_print_receipt_backend.report_pos_receipt"
-        print_report_name="'Receipt_%s' % (object.pos_reference)"
-        paperformat="pos_print_receipt_backend.paperformat_pos_receipt"
-    />
+    <record id="action_report_receipt" model="ir.actions.report">
+        <field name="name">Print Receipt</field>
+        <field name="model">pos.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">pos_print_receipt_backend.report_pos_receipt</field>
+        <field name="report_file">pos_print_receipt_backend.report_pos_receipt</field>
+        <field
+            name="print_report_name"
+        >'Receipt_%s' % (object.pos_reference or object.name)</field>
+        <field name="binding_model_id" ref="model_pos_order" />
+        <field name="binding_type">report</field>
+        <field
+            name="paperformat_id"
+            ref="pos_print_receipt_backend.paperformat_pos_receipt"
+        />
+    </record>
 </odoo>

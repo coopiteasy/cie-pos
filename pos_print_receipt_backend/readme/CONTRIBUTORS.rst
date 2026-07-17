@@ -1,1 +1,4 @@
-* Vincent Van Rossem <vincent@coopiteasy.be>
+* `Coop IT Easy SC <https://coopiteasy.be>`_:
+
+  * Vincent Van Rossem
+  * Simon Hick

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Mirrors frontend WrappedProductNameLines.xml from point_of_sale -->
+    <template id="WrappedProductNameLines">
+        <t t-foreach="product_name_wrapped" t-as="wrapped_line">
+            <div>
+                <t t-esc="wrapped_line" />
+            </div>
+        </t>
+    </template>
+
+</odoo>

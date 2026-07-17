@@ -1,163 +1,169 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
-
-        <record model="ir.ui.view" id="pos_order_send_wizard_form">
-            <field name="name">pos.order.receipt.send.form</field>
-            <field name="model">pos.order.receipt.send</field>
-            <field name="groups_id" eval="[(4,ref('point_of_sale.group_pos_user'))]" />
-            <field name="arch" type="xml">
-                <form string="POS Receipt Send &amp; Print">
-                    <!-- truly invisible fields for control and options -->
-                    <field name="composition_mode" invisible="1" />
-                    <field name="composer_id" invisible="1" />
-                    <field name="order_ids" invisible="1" />
-                    <field name="email_from" invisible="1" />
-                    <field name="mail_server_id" invisible="1" />
-                    <div name="option_print">
-                        <field name="is_print" />
-                        <b><label for="is_print" /></b>
-                        <div
-                            name="info_form"
-                            attrs="{'invisible': ['|', ('is_print', '=', False), ('composition_mode', '=', 'mass_mail')]}"
-                            class="text-center text-muted d-inline-block"
-                        >
-                            Preview as a PDF
-                        </div>
-                    </div>
-                    <div name="option_email">
-                        <field name="is_email" />
-                        <b><label for="is_email" /></b>
-                    </div>
+    <!-- Based on account_invoice_send_wizard_form -->
+    <!-- difference are given here with the tag DIF -->
+    <record model="ir.ui.view" id="pos_order_send_wizard_form">
+        <field name="name">pos.order.receipt.send.form</field>
+        <field name="model">pos.order.receipt.send</field>
+        <field name="groups_id" eval="[(4,ref('point_of_sale.group_pos_user'))]" />
+        <field name="arch" type="xml">
+            <form string="POS Receipt Send &amp; Print">
+                <!-- DIF: removed move_type warning -->
+                <!-- truly invisible fields for control and options -->
+                <field name="composition_mode" invisible="1" />
+                <!-- invoice_ids -> order_ids -->
+                <field name="order_ids" invisible="1" />
+                <field name="email_from" invisible="1" />
+                <field name="mail_server_id" invisible="1" />
+                <!-- DIF: removed display_attachment_fields and attachments_not_supported -->
+                <div name="option_print">
+                    <field name="is_print" />
+                    <b><label for="is_print" /></b>
                     <div
-                        class="text-left d-inline-block mr8"
-                        attrs="{'invisible': ['|', ('is_email','=', False), ('receipt_without_email', '=', False)]}"
+                        name="info_form"
+                        attrs="{'invisible': ['|', ('is_print', '=', False), ('composition_mode', '=', 'mass_mail')]}"
+                        class="text-center text-muted d-inline-block ms-2"
                     >
-                        <field name="receipt_without_email" class="mr4" />
+                        Preview as a PDF
                     </div>
+                </div>
+                <div name="option_email">
+                    <field name="is_email" />
+                    <b><label for="is_email" /></b>
+                </div>
+                <!-- DIF: invoice_without_mail -> receipt_without_email -->
+                <div
+                    class="text-start d-inline-block mr8"
+                    attrs="{'invisible': ['|', ('is_email','=', False), ('receipt_without_email', '=', False)]}"
+                >
+                    <!-- DIF: invoice -> receipt -->
+                    <field name="receipt_without_email" class="mr4" />
+                </div>
+                <div name="mail_form" attrs="{'invisible': [('is_email', '=', False)]}">
+                    <!-- visible wizard -->
                     <div
-                        name="mail_form"
-                        attrs="{'invisible': [('is_email', '=', False)]}"
+                        attrs="{'invisible': [('composition_mode', '=', 'mass_mail')]}"
                     >
-                        <!-- visible wizard -->
-                        <div
-                            attrs="{'invisible': [('composition_mode', '=', 'mass_mail')]}"
-                        >
-                            <group>
-                                <label
-                                    for="partner_ids"
-                                    string="Recipients"
-                                    groups="point_of_sale.group_pos_user"
-                                />
-                                <div groups="point_of_sale.group_pos_user">
-                                    <span
-                                        attrs="{'invisible': [('composition_mode', '!=', 'mass_mail')]}"
-                                    >
-                                        <strong>Email mass mailing</strong> on
-                                        <span>the selected records</span>
-                                    </span>
-                                    <span>Followers of the document and</span>
-                                    <field
-                                        name="partner_ids"
-                                        widget="many2many_tags_email"
-                                        placeholder="Add contacts to notify..."
-                                        context="{'force_email':True, 'show_email':True}"
-                                        attrs="{'invisible': [('composition_mode', '=', 'mass_mail')]}"
-                                    />
-                                </div>
-                                <field
-                                    name="subject"
-                                    placeholder="Subject..."
-                                    attrs="{'required': [('is_email', '=', True), ('composition_mode', '=', 'comment')]}"
-                                />
-                            </group>
-                            <field
-                                name="body"
-                                style="border:none;"
-                                options="{'style-inline': true}"
-                            />
-                        </div>
+                        <!-- DIF: groups="base.group_user" -> point_of_sale.group_pos_user" -->
                         <group>
-                            <group
-                                attrs="{'invisible': [('composition_mode', '=', 'mass_mail')]}"
-                            >
+                            <label
+                                for="partner_ids"
+                                string="Recipients"
+                                groups="point_of_sale.group_pos_user"
+                            />
+                        <!-- DIF: groups="base.group_user" -> point_of_sale.group_pos_user" -->
+                            <div groups="point_of_sale.group_pos_user">
+                                <span
+                                    attrs="{'invisible': [('composition_mode', '!=', 'mass_mail')]}"
+                                >
+                                    <strong>Email mass mailing</strong> on
+                                    <span>the selected records</span>
+                                </span>
+                                <span>Followers of the document and</span>
                                 <field
-                                    name="attachment_ids"
-                                    widget="many2many_binary"
-                                    string="Attach a file"
-                                    nolabel="1"
-                                    colspan="2"
+                                    name="partner_ids"
+                                    widget="many2many_tags_email"
+                                    placeholder="Add contacts to notify..."
+                                    context="{'force_email':True, 'show_email':True}"
                                     attrs="{'invisible': [('composition_mode', '=', 'mass_mail')]}"
                                 />
-                            </group>
-                            <group>
-                                <field
-                                    name="template_id"
-                                    options="{'no_create': True, 'no_edit': True}"
-                                    context="{'default_model': 'pos.order'}"
-                                />
-                            </group>
+                            </div>
+                            <field
+                                name="subject"
+                                placeholder="Subject..."
+                                attrs="{'required': [('is_email', '=', True), ('composition_mode', '=', 'comment')]}"
+                            />
                         </group>
+                        <field
+                            name="body"
+                            style="oe-bordered-editor"
+                            options="{'style-inline': true}"
+                        />
                     </div>
+                    <group>
+                        <group>
+                            <field
+                                name="template_id"
+                                options="{'no_create': True, 'no_edit': True}"
+                                context="{'default_model': 'pos.order'}"
+                            />
+                        </group>
+                    </group>
+                </div>
 
-                    <footer>
-                        <button
-                            string="Send &amp; Print"
-                            attrs="{'invisible': ['|', ('is_email', '=', False), ('is_print', '=', False)]}"
-                            name="send_and_print_action"
-                            type="object"
-                            class="send_and_print btn-primary o_mail_send"
-                        />
-                        <button
-                            string="Send"
-                            attrs="{'invisible': ['|', ('is_print', '=', True), ('is_email', '=', False)]}"
-                            name="send_and_print_action"
-                            type="object"
-                            class="send btn-primary o_mail_send"
-                        />
-                        <button
-                            string="Print"
-                            attrs="{'invisible': ['|', ('is_print', '=', False), ('is_email', '=', True)]}"
-                            name="send_and_print_action"
-                            type="object"
-                            class="print btn-primary o_mail_send"
-                        />
-                        <button
-                            string="Cancel"
-                            class="btn-secondary"
-                            special="cancel"
-                        />
-                        <button
-                            icon="fa-lg fa-save"
-                            type="object"
-                            name="save_as_template"
-                            string="Save as new template"
-                            attrs="{'invisible': ['|', ('composition_mode', '=', 'mass_mail'), ('is_email', '=', False)]}"
-                            class="pull-right btn-secondary"
-                            help="Save as a new template"
-                        />
-                    </footer>
-                </form>
-            </field>
-        </record>
+                <!-- DIF: 'display_attachment_fields', '=', False
+                    -> 'composition_mode' = 'mass_mail' -->
+                <group attrs="{'invisible': [('composition_mode', '=', 'mass_mail')]}">
+                    <!-- DIF: removed attachments_not_supported and display_attachment_fields -->
+                    <field
+                        name="attachment_ids"
+                        widget="many2many_binary"
+                        string="Attach a file"
+                        nolabel="1"
+                        colspan="2"
+                        attrs="{'invisible': [('composition_mode', '=', 'mass_mail')]}"
+                    />
+                </group>
 
-       <act_window
-            name="Send"
-            id="receipt_send"
-            multi="True"
-            key2="client_action_multi"
-            res_model="pos.order.receipt.send"
-            src_model="pos.order"
-            view_mode="form"
-            target="new"
-            view_type="form"
-            context="{
-                'default_template_id': ref('pos_print_receipt_backend.email_template_pos_order_receipt'),
-                'mark_receipt_as_sent': True,
-            }"
-            groups="point_of_sale.group_pos_user"
-        />
+                <footer>
+                    <button
+                        attrs="{'invisible': ['|', ('is_email', '=', False), ('is_print', '=', False)]}"
+                        class="send_and_print btn-primary o_mail_send"
+                        data-hotkey="q"
+                        name="send_and_print_action"
+                        string="Send &amp; Print"
+                        type="object"
+                    />
+                    <button
+                        attrs="{'invisible': ['|', ('is_print', '=', True), ('is_email', '=', False)]}"
+                        class="send btn-primary o_mail_send"
+                        data-hotkey="q"
+                        name="send_and_print_action"
+                        string="Send"
+                        type="object"
+                    />
+                    <button
+                        attrs="{'invisible': ['|', ('is_print', '=', False), ('is_email', '=', True)]}"
+                        class="print btn-primary o_mail_send"
+                        name="send_and_print_action"
+                        string="Print"
+                        type="object"
+                    />
+                    <button
+                        class="btn-secondary"
+                        data-hotkey="z"
+                        name="cancel"
+                        special="cancel"
+                        string="Cancel"
+                    />
+                    <button
+                        attrs="{'invisible': ['|', ('composition_mode', '=', 'mass_mail'), ('is_email', '=', False)]}"
+                        class="float-end btn-secondary"
+                        data-hotkey="w"
+                        help="Save as a new template"
+                        icon="fa-lg fa-save"
+                        name="save_as_template"
+                        string="Save as new template"
+                        type="object"
+                    />
+                </footer>
+            </form>
+        </field>
+    </record>
 
-    </data>
+    <!-- DIF: invoice -> order -->
+    <record id="order_send" model="ir.actions.server">
+        <field name="name">Send &amp; print</field>
+        <field name="state">code</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="point_of_sale.model_pos_order" />
+        <field name="binding_model_id" ref="point_of_sale.model_pos_order" />
+        <field name="binding_view_types">form</field>
+        <field name="code">
+            if records:
+                action = records.action_send_and_print()
+        </field>
+    </record>
+
 
 </odoo>

@@ -3,9 +3,9 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     "name": "Generate POS receipts from Odoo Backend",
-    "version": "12.0.1.1.1",
+    "version": "16.0.1.0.0",
     "author": "Coop IT Easy SC",
-    "website": "https://coopiteasy.be",
+    "website": "https://github.com/coopiteasy/cie-pos",
     "license": "AGPL-3",
     "category": "Point of Sale",
     "summary": """
@@ -13,12 +13,20 @@
     """,
     "depends": ["point_of_sale"],
     "data": [
-        "data/report_paperformat.xml",
-        "report/report_pos_receipt.xml",
-        "views/point_of_sale_report.xml",
+        "data/report_paperformat.xml",  # used in point_of_sale_report
+        "views/point_of_sale_report.xml",  # used in report_pos_receipt mail_template_data
         "data/mail_template_data.xml",
-        "wizard/pos_order_receipt_send_views.xml",
+        "report/order_lines_receipt.xml",
+        "report/report_pos_receipt.xml",
+        "report/wrapped_product_name_lines.xml",
+        "security/ir.model.access.csv",
         "views/pos_order_view.xml",
+        "wizard/pos_order_receipt_send_views.xml",
     ],
-    "installable": True,
+    "assets": {
+        "web.report_assets_common": [
+            "/point_of_sale/static/src/css/pos_receipts.css",
+            "/pos_print_receipt_backend/static/src/css/pos_receipt.css",
+        ],
+    },
 }
