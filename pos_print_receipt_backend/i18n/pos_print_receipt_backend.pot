@@ -504,6 +504,11 @@ msgstr ""
 
 #. module: pos_print_receipt_backend
 #: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.report_pos_receipt_document
+msgid "Tax ID"
+msgstr ""
+
+#. module: pos_print_receipt_backend
+#: model_terms:ir.ui.view,arch_db:pos_print_receipt_backend.report_pos_receipt_document
 msgid "Tel:"
 msgstr ""
 
