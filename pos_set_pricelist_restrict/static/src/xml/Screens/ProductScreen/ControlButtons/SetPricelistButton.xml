@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+SPDX-FileCopyrightText: 2026 Coop IT Easy SC
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+<odoo>
+    <t
+        t-name="pos_set_pricelist_restrict.SetPricelistButton"
+        t-inherit="point_of_sale.SetPricelistButton"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//div[hasclass('o_pricelist_button')]" position="attributes">
+            <attribute name="t-att-class">
+                {"disabled-mode": !hasPricelistControlRights}
+            </attribute>
+        </xpath>
+    </t>
+</odoo>

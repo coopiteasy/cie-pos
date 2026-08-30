@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+SPDX-FileCopyrightText: 2026 Coop IT Easy SC
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+<odoo>
+    <t
+        t-name="pos_set_pricelist_restrict.PartnerDetailsEdit"
+        t-inherit="point_of_sale.PartnerDetailsEdit"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath
+            expr="//select[@name='property_product_pricelist']/.."
+            position="attributes"
+        >
+            <attribute name="t-att-hidden">
+                !hasPricelistControlRights
+            </attribute>
+        </xpath>
+    </t>
+</odoo>
