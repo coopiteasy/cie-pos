@@ -1,0 +1,6 @@
+.pos .control-button.disabled-mode,
+.pos .control-button.disabled-mode:hover {
+    background: $gray-200;
+    color: $gray-500;
+    cursor: not-allowed;
+}
