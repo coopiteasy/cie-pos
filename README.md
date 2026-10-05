@@ -26,6 +26,7 @@ addon | version | maintainers | summary
 [pos_payworld_wallee](pos_payworld_wallee/) | 16.0.1.0.2 |  | Integrate Odoo POS with Payworld/Wallee cloud payment terminals
 [pos_print_receipt_backend](pos_print_receipt_backend/) | 16.0.1.0.1 |  | This module helps you to print and/or email POS receipts from the Odoo backend
 [pos_products](pos_products/) | 16.0.1.0.0 |  | Add display weight and supplier information on PoS product cards
+[pos_set_pricelist_restrict](pos_set_pricelist_restrict/) | 16.0.1.0.0 | <a href='https://github.com/mihien'><img src='https://github.com/mihien.png' width='32' height='32' style='border-radius:50%;' alt='mihien'/></a> | Restrict pricelist changes to managers in the Point of Sale
 
 [//]: # (end addons)
 
